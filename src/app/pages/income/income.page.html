@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-input class="ion-margin-horizontal" slot="start" placeholder="Buscar recaudos..." (ionChange)="search($event)"
+      clearInput></ion-input>
+    <ion-buttons slot="end">
+      <ion-button size="small" (click)="add($event)"><ion-icon aria-hidden="true" name="add"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <ion-card *ngFor="let movement of filteredMovements">
+      <ion-card-header>
+        <ion-card-title class="ion-no-padding">
+          <ion-grid class="ion-no-padding">
+            <ion-row class="ion-no-padding">
+              <ion-col class="ion-text-start">
+                <ion-text>{{movement.movement_date}}</ion-text>
+              </ion-col>
+
+              <ion-col class="ion-text-end">
+                <ion-text color="success">$ {{movement.value|number: '1.0-0'}}</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content class="ion-no-padding ion-padding-start">
+        <ion-text class="ion-text-nowrap">{{movement.details}}</ion-text>
+      </ion-card-content>
+
+      <ion-button (click)="edit($event, movement.movement_id)" fill="clear">Editar</ion-button>
+      <ion-button fill="clear" id="open-toast" (click)="delete($event, movement.movement_id)">Eliminar</ion-button>
+    </ion-card>
+
+  </div>
+</ion-content>

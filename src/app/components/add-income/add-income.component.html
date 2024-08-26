@@ -1,0 +1,31 @@
+<ion-content class="ion-padding">
+    <form action="" (ngSubmit)="onSubmit()" [formGroup]="incomeForm">
+        <ion-list>
+            <ion-item>
+                <ion-input label="Fecha" type="date" formControlName="movement_date"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-textarea label="Detalles" placeholder="(No obligatorio)" formControlName="details"></ion-textarea>
+            </ion-item>
+
+            <ion-item>
+                <ion-input label="Valor" type="number" placeholder="Ingrese el dinero"
+                    formControlName="income"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-select label="Categoría" placeholder="" value="29" formControlName="category_id">
+                    <ion-select-option value="29">Recaudos</ion-select-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-button (click)="onSubmit()">{{ isEditMode ? 'Actualizar Ingreso' : 'Agregar Ingreso'
+                    }}</ion-button>
+            </ion-item>
+
+        </ion-list>
+
+    </form>
+
+</ion-content>

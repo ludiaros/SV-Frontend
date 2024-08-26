@@ -1,0 +1,7 @@
+{
+  "name": "SGRosal",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

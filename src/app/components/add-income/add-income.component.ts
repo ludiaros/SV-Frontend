@@ -23,7 +23,6 @@ export class AddIncomeComponent implements OnInit {
   ) {
     this.incomeForm = this.fb.group({
       movement_date: ['', Validators.required],
-      parent_id: ['29787', Validators.required],
       category_id: ['29', Validators.required],
       details: ['', Validators.required],
       income: ['', Validators.required],
@@ -44,8 +43,7 @@ export class AddIncomeComponent implements OnInit {
         movement_date: response.income[0].movement_date,
         category_id: response.income[0].category_id,
         details: response.income[0].details,
-        income: response.income[0].value,
-        parent_id: response.income[0].parent_id
+        income: response.income[0].value
       })
     }).catch(error => {
       console.error('Error al cargar los detalles del movimiento', error);

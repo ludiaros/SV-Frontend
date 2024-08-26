@@ -19,10 +19,10 @@ export class AllowancePage {
   }
 
   async ionViewDidEnter() {
-
+    
     this.movements = await this.api.getAllowance();
 
-    this.filteredMovements = this.movements;
+    this.filteredMovements = Object.values(this.movements);
   }
 
   search($event: any) {

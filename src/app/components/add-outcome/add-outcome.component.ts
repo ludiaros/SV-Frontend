@@ -24,7 +24,6 @@ export class AddOutcomeComponent implements OnInit {
   ) {
     this.outcomeForm = this.fb.group({
       movement_date: ['', Validators.required],
-      parent_id: ['29787', Validators.required],
       category_id: ['3', Validators.required],
       details: ['', Validators.required],
       outcome: ['', Validators.required]
@@ -45,8 +44,7 @@ export class AddOutcomeComponent implements OnInit {
         movement_date: response.outcome[0].movement_date,
         category_id: response.outcome[0].category_id,
         details: response.outcome[0].details,
-        outcome: response.outcome[0].value,
-        parent_id: response.outcome[0].parent_id
+        outcome: response.outcome[0].value
       })
     }).catch(error => {
       console.error('Error al cargar los detalles del movimiento', error);

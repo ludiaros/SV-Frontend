@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="ion-text-end">NOMBRE USUARIO</ion-title>
+    @if (userData) {
+      <ion-title class="ion-text-end">{{userData.name}}</ion-title>
+    } @else {
+      <ion-title class="ion-text-end">SIN USER ASOCIADO</ion-title>
+    }
+    
   </ion-toolbar>
 </ion-header>
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-tabs',
@@ -6,7 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
+  userData: any;
 
-  constructor() {}
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit() {
+    this.apiService.getUser().then(data => {
+      this.userData = data;
+    }).catch(error => {
+      console.error('Error al obtener la información del usuario:', error);
+    });
+  }
 
 }

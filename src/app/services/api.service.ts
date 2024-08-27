@@ -11,6 +11,7 @@ export class ApiService {
 
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
+  //USER DATA
   async registerToken() {
     const token = await this.tokenService.getToken();
     return this.http
@@ -18,6 +19,11 @@ export class ApiService {
         device_token: token,
       })
       .toPromise();
+  }
+
+  async getUser() {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${this.url}/get-user`, { headers }).toPromise();
   }
 
   // Ejemplos de métodos GET

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 import { TokenService } from './token.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class ApiService {
   async registerToken() {
     const token = await this.tokenService.getToken();
     return this.http
-      .post(`${this.url}/register-token`, {
+      .post(`${environment.apiUrl}/register-token`, {
         device_token: token,
       })
       .toPromise();
@@ -23,30 +24,32 @@ export class ApiService {
 
   async getUser() {
     const headers = await this.getAuthHeaders();
-    return this.http.get(`${this.url}/get-user`, { headers }).toPromise();
+    return this.http.get(`${environment.apiUrl}/get-user`, { headers }).toPromise();
   }
 
   // Ejemplos de métodos GET
   async getAllowance() {
+    
     const headers = await this.getAuthHeaders();
-    return this.http.get(`${this.url}/allowance`, { headers }).toPromise();
+    return this.http.get(`${environment.apiUrl}/allowance`, { headers }).toPromise();
   }
 
   async getIncome() {
     const headers = await this.getAuthHeaders();
-    return this.http.get(`${this.url}/income`, { headers }).toPromise();
+    return this.http.get(`${environment.apiUrl}/income`, { headers }).toPromise();
   }
 
   async getOutcome() {
+    this.registerToken();
     const headers = await this.getAuthHeaders();
-    return this.http.get(`${this.url}/outcome`, { headers }).toPromise();
+    return this.http.get(`${environment.apiUrl}/outcome`, { headers }).toPromise();
   }
 
   // Ejemplo de método DELETE
   async deleteIncome(incomeId: number) {
     const options = await this.getHttpOptions(
       'PUT',
-      `${this.url}/income/${incomeId}/delete`
+      `${environment.apiUrl}/income/${incomeId}/delete`
     );
     const response: HttpResponse = await CapacitorHttp.put(options);
     return response.data;
@@ -55,7 +58,7 @@ export class ApiService {
   async deleteOutcome(outcomeId: number) {
     const options = await this.getHttpOptions(
       'PUT',
-      `${this.url}/outcome/${outcomeId}/delete`
+      `${environment.apiUrl}/outcome/${outcomeId}/delete`
     );
     const response: HttpResponse = await CapacitorHttp.put(options);
     return response.data;
@@ -65,7 +68,7 @@ export class ApiService {
   async addIncome(incomeData: any) {
     const options = await this.getHttpOptions(
       'POST',
-      `${this.url}/income`,
+      `${environment.apiUrl}/income`,
       incomeData
     );
     const response: HttpResponse = await CapacitorHttp.post(options);
@@ -75,7 +78,7 @@ export class ApiService {
   async addOutcome(outcomeData: any) {
     const options = await this.getHttpOptions(
       'POST',
-      `${this.url}/outcome`,
+      `${environment.apiUrl}/outcome`,
       outcomeData
     );
     const response: HttpResponse = await CapacitorHttp.post(options);
@@ -86,7 +89,7 @@ export class ApiService {
   async getIncomeById(incomeId: number) {
     const options = await this.getHttpOptionsWithoutBody(
       'GET',
-      `${this.url}/income/${incomeId}`
+      `${environment.apiUrl}/income/${incomeId}`
     );
     const response: HttpResponse = await CapacitorHttp.get(options);
     return response.data;
@@ -95,7 +98,7 @@ export class ApiService {
   async getOutcomeById(outcomeId: number) {
     const options = await this.getHttpOptionsWithoutBody(
       'GET',
-      `${this.url}/outcome/${outcomeId}`
+      `${environment.apiUrl}/outcome/${outcomeId}`
     );
     const response: HttpResponse = await CapacitorHttp.get(options);
     return response.data;
@@ -105,7 +108,7 @@ export class ApiService {
   async updateIncome(incomeId: number, incomeData: any) {
     const options = await this.getHttpOptions(
       'PATCH',
-      `${this.url}/income/${incomeId}`,
+      `${environment.apiUrl}/income/${incomeId}`,
       incomeData
     );
     const response: HttpResponse = await CapacitorHttp.put(options);
@@ -115,7 +118,7 @@ export class ApiService {
   async updateOutcome(outcomeId: number, outcomeData: any) {
     const options = await this.getHttpOptions(
       'PATCH',
-      `${this.url}/outcome/${outcomeId}`,
+      `${environment.apiUrl}/outcome/${outcomeId}`,
       outcomeData
     );
     const response: HttpResponse = await CapacitorHttp.put(options);

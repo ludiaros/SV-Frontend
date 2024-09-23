@@ -89,7 +89,6 @@ export class OutcomePage {
   deleteOutcome(outcomeId: number) {
     this.api.deleteOutcome(outcomeId).then(async response => {
       this.filteredMovements =  await this.api.getOutcome();
-      console.log(response.message);
     }).catch(error => {
       console.error('Error al eliminar gasto', error);
     });

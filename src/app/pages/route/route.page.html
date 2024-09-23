@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-input class="ion-margin-horizontal" slot="start" placeholder="Buscar rutas..." (ionChange)="search($event)" clearInput></ion-input>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="subtabs" style="display: flex">
+    <ion-button fill="clear">Route 1</ion-button>
+    <ion-button fill="clear" id="open-toast">Route 2</ion-button>
+  </div>
+  <div id="container">
+    <ion-card *ngFor="let route of filteredRoutes" >
+      <ion-card-header>
+        <ion-card-title class="ion-no-padding">
+          <ion-grid class="ion-no-padding">
+            <ion-row class="ion-no-padding">
+              <ion-col class="ion-text-start">
+                <ion-text>{{route.movement_date}}</ion-text>
+              </ion-col>
+
+              <ion-col class="ion-text-end">
+                <ion-text color="danger">$ {{route.value|number: '1.0-0'}}</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content class="ion-no-padding ion-padding-start">
+        <ion-text  class="ion-text-nowrap">{{route.details}}</ion-text>
+      </ion-card-content>
+
+      <ion-button (click)="observation($event, route.movement_id)" fill="clear">Observación</ion-button>
+      <ion-button fill="clear" id="open-toast" (click)="check($event, route.movement_id)">Entregado</ion-button>
+    </ion-card>
+  </div>
+</ion-content>

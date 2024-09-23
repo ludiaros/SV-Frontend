@@ -26,8 +26,10 @@ export class IncomePage {
     this.loadMovements();
   }
 
-  async loadMovements() {    
+  async loadMovements() {
     this.movements = await this.api.getIncome();
+    console.log(this.movements);
+    
     this.filteredMovements = this.movements;
   }
 

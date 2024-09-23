@@ -19,6 +19,9 @@ const routes: Routes = [
       {
         path: 'allowance',
         loadChildren: () => import('../pages/allowance/allowance.module').then(m => m.AllowancePageModule)
+      },{
+        path: 'routes',
+        loadChildren: () => import('../pages/route/route.module').then(m => m.RoutePageModule)
       },
       {
         path: '',

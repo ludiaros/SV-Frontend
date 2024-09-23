@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://181.52.244.110:81/rosalconduct/public/api'
+  apiUrl: 'http://localhost:8000/api',
 };
 
 /*

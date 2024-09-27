@@ -6,8 +6,12 @@
 
 <ion-content [fullscreen]="true">
   <div class="subtabs" style="display: flex">
-    <ion-button fill="clear">Route 1</ion-button>
-    <ion-button fill="clear" id="open-toast">Route 2</ion-button>
+    <ion-button 
+      *ngFor="let route of routesName" 
+      [fill]="activeRoutes.includes(route) ? 'solid' : 'clear'" 
+      (click)="toggleRoute(route)">
+      {{ route }}
+    </ion-button>
   </div>
   <div id="container">
     <ion-card *ngFor="let route of filteredRoutes" >
@@ -16,7 +20,7 @@
           <ion-grid class="ion-no-padding">
             <ion-row class="ion-no-padding">
               <ion-col class="ion-text-start">
-                <ion-text>{{route.movement_date}}</ion-text>
+                <ion-text>{{route.referral_type}} - {{route.referral_id}}</ion-text>
               </ion-col>
 
               <ion-col class="ion-text-end">

@@ -12,6 +12,8 @@ export class RoutePage implements OnInit {
   routes: any;
   filteredRoutes: any;
   routeId!: number;
+  routesName = ['Route 1', 'Route 2', 'Route 3'];  // Arreglo de rutas
+  activeRoutes: string[] = [];  // Almacena la ruta activa
 
   constructor(
     private api: ApiService,
@@ -28,6 +30,15 @@ export class RoutePage implements OnInit {
   async loadRoutes() {
     this.routes = await this.api.getAllowance();
     this.filteredRoutes = this.routes;
+  }
+
+  toggleRoute(route: string) {
+    // Si la ruta ya está activa, la removemos, si no, la agregamos
+    if (this.activeRoutes.includes(route)) {
+      this.activeRoutes = this.activeRoutes.filter(activeRoute => activeRoute !== route);
+    } else {
+      this.activeRoutes.push(route);
+    }
   }
 
   search($event: any) {

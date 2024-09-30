@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://181.52.243.205:81/rosalconduct/public/api'
+  apiUrl: 'http://181.52.243.108:81/rosalconduct/public/api'
 };

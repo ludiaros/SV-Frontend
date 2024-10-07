@@ -11,9 +11,9 @@ import { ApiService } from 'src/app/services/api.service';
 export class RoutePage implements OnInit {
   routes: any;
   filteredRoutes: any;
+  activeRoutes: string[] = [];
+  routesName: string[] = ['Ruta 1', 'Ruta 2'];
   routeId!: number;
-  routesName = ['Route 1', 'Route 2', 'Route 3'];  // Arreglo de rutas
-  activeRoutes: string[] = [];  // Almacena la ruta activa
 
   constructor(
     private api: ApiService,
@@ -21,28 +21,33 @@ export class RoutePage implements OnInit {
     private toastController: ToastController
   ) {}
 
-  ngOnInit() {}
-
-  async ionViewDidEnter() {
+  ngOnInit() {
     this.loadRoutes();
   }
 
   async loadRoutes() {
-    this.routes = await this.api.getAllowance();
+    this.routes = await this.api.getRoute();
     this.filteredRoutes = this.routes;
   }
 
   toggleRoute(route: string) {
-    // Si la ruta ya está activa, la removemos, si no, la agregamos
     if (this.activeRoutes.includes(route)) {
       this.activeRoutes = this.activeRoutes.filter(activeRoute => activeRoute !== route);
     } else {
       this.activeRoutes.push(route);
     }
+
+    if (this.activeRoutes.length === 0) {
+      this.filteredRoutes = this.routes;
+    } else {
+      this.filteredRoutes = this.routes.filter((r: any) =>
+        this.activeRoutes.includes(r.route_id)
+      );
+    }
   }
 
   search($event: any) {
-    let keyword = $event.target.value.toUpperCase();
+    const keyword = $event.target.value.toUpperCase();
 
     this.filteredRoutes = this.routes.filter((movement: any) =>
       movement.details.includes(keyword)
@@ -80,7 +85,6 @@ export class RoutePage implements OnInit {
     await toast.present();
   }
 
-  
   checkRoute(outcomeId: number) {
     this.api.deleteOutcome(outcomeId).then(async response => {
       this.filteredRoutes =  await this.api.getOutcome();

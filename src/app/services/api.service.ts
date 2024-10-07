@@ -8,11 +8,9 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class ApiService {
-  url: string = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
-  //USER DATA
   async registerToken() {
     const token = await this.tokenService.getToken();
     return this.http
@@ -27,9 +25,7 @@ export class ApiService {
     return this.http.get(`${environment.apiUrl}/get-user`, { headers }).toPromise();
   }
 
-  // Ejemplos de métodos GET
   async getAllowance() {
-    
     const headers = await this.getAuthHeaders();
     return this.http.get(`${environment.apiUrl}/allowance`, { headers }).toPromise();
   }
@@ -45,7 +41,11 @@ export class ApiService {
     return this.http.get(`${environment.apiUrl}/outcome`, { headers }).toPromise();
   }
 
-  // Ejemplo de método DELETE
+  async getRoute() {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${environment.apiUrl}/referral`, { headers }).toPromise();
+  }
+
   async deleteIncome(incomeId: number) {
     const options = await this.getHttpOptions(
       'PUT',
@@ -64,7 +64,6 @@ export class ApiService {
     return response.data;
   }
 
-  // Ejemplo de método POST
   async addIncome(incomeData: any) {
     const options = await this.getHttpOptions(
       'POST',
@@ -85,7 +84,6 @@ export class ApiService {
     return response.data;
   }
 
-  // Ejemplos de métodos GET por ID
   async getIncomeById(incomeId: number) {
     const options = await this.getHttpOptionsWithoutBody(
       'GET',
@@ -104,7 +102,6 @@ export class ApiService {
     return response.data;
   }
 
-  // Ejemplos de métodos PATCH para actualización
   async updateIncome(incomeId: number, incomeData: any) {
     const options = await this.getHttpOptions(
       'PATCH',
@@ -125,7 +122,6 @@ export class ApiService {
     return response.data;
   }
 
-  // Método privado para obtener headers con token
   private async getAuthHeaders() {
     const token = await this.tokenService.getToken();
     return new HttpHeaders({
@@ -133,7 +129,6 @@ export class ApiService {
     });
   }
 
-  // Método privado para obtener opciones HTTP con token y datos (si es necesario)
   private async getHttpOptions(method: string, url: string, data?: any) {
     const token = await this.tokenService.getToken();
     return {
@@ -147,7 +142,6 @@ export class ApiService {
     };
   }
 
-  // Método privado para obtener opciones HTTP sin cuerpo
   private async getHttpOptionsWithoutBody(method: string, url: string) {
     const token = await this.tokenService.getToken();
     return {

@@ -1,0 +1,9 @@
+.single-route {
+    width: 100%;  // El botón ocupa todo el ancho si hay una sola ruta
+  }
+  
+  .multiple-routes {
+    width: 100%;  // El botón es pequeño si hay más de una ruta
+    margin: 8px;  // Añade algo de espacio entre los botones
+  }
+  

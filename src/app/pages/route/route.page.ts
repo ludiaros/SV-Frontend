@@ -27,7 +27,6 @@ export class RoutePage implements OnInit {
 
   async loadRoutes() {
     this.routes = await this.api.getRoute();
-    console.log(this.routes);
     
     this.filteredRoutes = this.routes;
   }

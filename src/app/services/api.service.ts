@@ -84,6 +84,16 @@ export class ApiService {
     return response.data;
   }
 
+  async addObservation(observationData: any) {
+    const options = await this.getHttpOptions(
+      'POST', 
+      `${environment.apiUrl}/observation`, 
+      observationData
+    );
+    const response: HttpResponse = await CapacitorHttp.post(options);
+    return response.data;
+  }
+
   async getIncomeById(incomeId: number) {
     const options = await this.getHttpOptionsWithoutBody(
       'GET',

@@ -1,3 +1,18 @@
-<p>
-  add-observation works!
-</p>
+<ion-content class="ion-padding">
+  <form action="" (ngSubmit)="onSubmit()" [formGroup]="observationForm">
+    <ion-list>
+
+      <ion-item>
+        <ion-textarea label="Observación" placeholder="(No obligatorio)" formControlName="observation"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-button (click)="onSubmit()">Agregar Observación
+        </ion-button>
+      </ion-item>
+
+    </ion-list>
+
+  </form>
+
+</ion-content>

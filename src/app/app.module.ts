@@ -11,9 +11,10 @@ import { AddOutcomeComponent } from './components/add-outcome/add-outcome.compon
 import { ReactiveFormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { AddObservationComponent } from './components/add-observation/add-observation.component';
 
 @NgModule({
-  declarations: [AppComponent, AddIncomeComponent, AddOutcomeComponent],
+  declarations: [AppComponent, AddIncomeComponent, AddOutcomeComponent, AddObservationComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, IonicStorageModule.forRoot()],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, provideHttpClient() ],
   bootstrap: [AppComponent],

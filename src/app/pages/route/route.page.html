@@ -13,11 +13,11 @@
 <ion-content [fullscreen]="true">
   <div class="subtabs" style="display: flex">
     <ion-button
-      *ngFor="let route of routesName"
-      [fill]="activeRoutes.includes(route) ? 'solid' : 'clear'"
-      (click)="toggleRoute(route)"
+      *ngFor="let routeName of routesName"
+      [fill]="activeRoutes.includes(routeMap[routeName]) ? 'solid' : 'clear'"
+      (click)="toggleRoute(routeName)"
       [ngClass]="{'single-route': routesName.length === 1, 'multiple-routes': routesName.length > 1}">
-      {{ route }}
+      {{ routeName }}
     </ion-button>
   </div>
 
@@ -39,4 +39,6 @@
       </ion-card-content>
       <ion-button (click)="observation($event, route.movement_id)" fill="clear">Observación</ion-button>
       <ion-button fill="clear" id="open-toast" (click)="check($event, route.movement_id)">Entregado</ion-button>
+    </ion-card>
+  </div>
    

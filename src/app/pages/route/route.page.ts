@@ -11,8 +11,9 @@ import { ApiService } from 'src/app/services/api.service';
 export class RoutePage implements OnInit {
   routes: any;
   filteredRoutes: any;
-  activeRoutes: string[] = [];
-  routesName: string[] = ['Ruta 1', 'Ruta 2'];
+  activeRoutes: number[] = []; // Almacenar los route_id activos
+  routesName: string[] = []; // Nombres de las rutas
+  routeMap: { [key: string]: number } = {};
   routeId!: number;
 
   constructor(
@@ -27,22 +28,37 @@ export class RoutePage implements OnInit {
 
   async loadRoutes() {
     this.routes = await this.api.getRoute();
+    console.log(this.routes);
     
+    const uniqueRouteNames: { [key: string]: boolean } = {};
+  
+    this.routes.forEach((route: any) => {
+      let routeName = `Ruta ${route.route_id}`;
+  
+      if (!uniqueRouteNames[routeName]) {
+        uniqueRouteNames[routeName] = true;
+        this.routesName.push(routeName);
+        this.routeMap[routeName] = route.route_id;
+      }
+    });
+  
     this.filteredRoutes = this.routes;
-  }
+  } 
 
-  toggleRoute(route: string) {
-    if (this.activeRoutes.includes(route)) {
-      this.activeRoutes = this.activeRoutes.filter(activeRoute => activeRoute !== route);
+  toggleRoute(routeName: string) {
+    const routeId = this.routeMap[routeName];
+
+    if (this.activeRoutes.includes(routeId)) {
+      this.activeRoutes = this.activeRoutes.filter(activeRouteId => activeRouteId !== routeId);
     } else {
-      this.activeRoutes.push(route);
+      this.activeRoutes.push(routeId);
     }
 
     if (this.activeRoutes.length === 0) {
-      this.filteredRoutes = this.routes;
+      this.filteredRoutes = [];
     } else {
-      this.filteredRoutes = this.routes.filter((r: any) =>
-        this.activeRoutes.includes(r.route_id)
+      this.filteredRoutes = this.routes.filter((route: any) =>
+        this.activeRoutes.includes(route.route_id)
       );
     }
   }

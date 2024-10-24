@@ -64,6 +64,15 @@ export class ApiService {
     return response.data;
   }
 
+  async checkRouteReferral(type: string, id: number) {
+    const options = await this.getHttpOptions(
+      'PUT',
+      `${environment.apiUrl}/referral/${type}/${id}/check`,
+    );
+    const response: HttpResponse = await CapacitorHttp.put(options);
+    return response.data;
+  }
+
   async addIncome(incomeData: any) {
     const options = await this.getHttpOptions(
       'POST',
@@ -84,13 +93,13 @@ export class ApiService {
     return response.data;
   }
 
-  async addObservation(observationData: any) {
+  async addObservation(observationData: any, type: string, id: number) {
     const options = await this.getHttpOptions(
-      'POST', 
-      `${environment.apiUrl}/observation`, 
+      'PUT', 
+      `${environment.apiUrl}/referral/${type}/${id}`,
       observationData
     );
-    const response: HttpResponse = await CapacitorHttp.post(options);
+    const response: HttpResponse = await CapacitorHttp.put(options);
     return response.data;
   }
 
@@ -107,6 +116,15 @@ export class ApiService {
     const options = await this.getHttpOptionsWithoutBody(
       'GET',
       `${environment.apiUrl}/outcome/${outcomeId}`
+    );
+    const response: HttpResponse = await CapacitorHttp.get(options);
+    return response.data;
+  }
+
+  async getRouteById(type: string, id: number) {
+    const options = await this.getHttpOptionsWithoutBody(
+      'GET',
+      `${environment.apiUrl}/referral/${type}/${id}`
     );
     const response: HttpResponse = await CapacitorHttp.get(options);
     return response.data;

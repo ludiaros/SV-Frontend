@@ -37,8 +37,8 @@
       <ion-card-content class="ion-no-padding ion-padding-start">
         <ion-text class="ion-text-nowrap">{{route.client_name}}</ion-text>
       </ion-card-content>
-      <ion-button (click)="observation($event, route.movement_id)" fill="clear">Observación</ion-button>
-      <ion-button fill="clear" id="open-toast" (click)="check($event, route.movement_id)">Entregado</ion-button>
+      <ion-button (click)="observation($event, route.referral_type, route.referral_id)" fill="clear">Observación</ion-button>
+      <ion-button fill="clear" id="open-toast" (click)="check($event, route.referral_type, route.referral_id)">Entregado</ion-button>
     </ion-card>
   </div>
    

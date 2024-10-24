@@ -8,34 +8,52 @@ import { ApiService } from 'src/app/services/api.service';
   templateUrl: './add-observation.component.html',
   styleUrls: ['./add-observation.component.scss'],
 })
-export class AddObservationComponent  implements OnInit {
+export class AddObservationComponent implements OnInit {
 
   observationForm: FormGroup;
+  @Output() observationAdded = new EventEmitter<void>();
+  @Input() referralType: string | null = null;
+  @Input() referralId: number | null = null;
+
 
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
     private popoverController: PopoverController
   ) {
-    this.observationForm = this.fb.group({ 
-      observation: ['', Validators.required],
-     });
-   }
+    this.observationForm = this.fb.group({
+      observations: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
-    return 0
+    if (this.referralId && this.referralType) {
+      this.loadRouteDetails(this.referralType, this.referralId);
+    }
+  }
+
+  loadRouteDetails(referralType: string, referralId: number): void {
+    this.api.getRouteById(referralType, referralId).then(response => {
+      this.observationForm.setValue({
+        observations: response.referral.observations,
+      });
+    }).catch(error => {
+      console.error('Error al cargar los detalles de la ruta', error);
+    });
   }
 
   async onSubmit(): Promise<void> {
-    if (this.observationForm.invalid) {
-      return;
-    }
-
     const observationData = this.observationForm.value;
 
     try {
-      await this.api.addObservation(observationData);
+      await this.api.addObservation(observationData, this.referralType!, this.referralId!).then(response => {
+        console.log('Ingreso actualizado:', response);
+      }).catch(error => {
+        console.error('Error al actualizar la observación:', error);
+      });;
+
       this.popoverController.dismiss();
+
     } catch (error) {
       console.error('Error al guardar la observación', error);
     }

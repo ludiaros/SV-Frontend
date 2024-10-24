@@ -11,10 +11,12 @@ import { ApiService } from 'src/app/services/api.service';
 export class RoutePage implements OnInit {
   routes: any;
   filteredRoutes: any;
-  activeRoutes: number[] = []; // Almacenar los route_id activos
-  routesName: string[] = []; // Nombres de las rutas
+  activeRoutes: number[] = []; 
+  routesName: string[] = []; 
   routeMap: { [key: string]: number } = {};
   routeId!: number;
+  type!: string;
+  id!: number;
 
   constructor(
     private api: ApiService,
@@ -66,12 +68,12 @@ export class RoutePage implements OnInit {
   search($event: any) {
     const keyword = $event.target.value.toUpperCase();
 
-    this.filteredRoutes = this.routes.filter((movement: any) =>
-      movement.details.includes(keyword)
+    this.filteredRoutes = this.routes.filter((route: any) =>
+      route.client_name.includes(keyword)
     );
   }
 
-  async observation(event: Event, routeId: number) {
+  async observation(event: Event, referralType:string, referralId: number) {
     const popover = await this.popoverController.create({
       component: AddObservationComponent,
       event: event,
@@ -79,19 +81,21 @@ export class RoutePage implements OnInit {
       side: 'bottom',
       alignment: 'center',
       componentProps: {
-        routeId: routeId,
+        referralType: referralType,
+        referralId: referralId,
       },
     });
 
     popover.onDidDismiss().then(async () => {
-      await this.loadRoutes();
+      this.filteredRoutes = await this.api.getRoute();
     });
 
     await popover.present();
   }
 
-  async check(event: Event, routeId: number) {
-    this.routeId = routeId;
+  async check(event: Event, type: string, id: number) {
+    this.type = type;
+    this.id = id;
     const toast = await this.toastController.create({
       position: 'middle',
       message: '¿Desea dar como entregada esta ruta?',
@@ -102,9 +106,9 @@ export class RoutePage implements OnInit {
     await toast.present();
   }
 
-  checkRoute(outcomeId: number) {
-    this.api.deleteOutcome(outcomeId).then(async response => {
-      this.filteredRoutes =  await this.api.getOutcome();
+  checkRoute(type: string, id: number) {
+    this.api.checkRouteReferral(type, id).then(async response => {
+      this.filteredRoutes =  await this.api.getRoute();
     }).catch(error => {
       console.error('Error al intentar entregar la ruta', error);
     });
@@ -115,7 +119,8 @@ export class RoutePage implements OnInit {
       text: 'Sí',
       role: 'info',
       handler: () => {
-        this.checkRoute(this.routeId);
+        this.checkRoute(this.type, this.id);
+        
       }
     },
     {

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
-import * as moment from 'moment';
 import { AddIncomeComponent } from 'src/app/components/add-income/add-income.component';
 
 import { ApiService } from 'src/app/services/api.service';

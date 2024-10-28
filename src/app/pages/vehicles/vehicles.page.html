@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>vehicles</ion-title>
-  </ion-toolbar>
+  <ion-button *ngFor="let subTab of subTabs" class="">
+    {{ subTab }}
+  </ion-button>
 </ion-header>
 
 <ion-content [fullscreen]="true">

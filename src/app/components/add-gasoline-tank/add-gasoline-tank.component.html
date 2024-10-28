@@ -1,3 +1,35 @@
-<p>
-  add-gasoline-tank works!
-</p>
+<ion-content class="ion-padding">
+  <form action="" (ngSubmit)="onSubmit()" [formGroup]="tankForm">
+    <ion-list>
+
+      <ion-item>
+        <ion-select label="Vehiculo" placeholder="Placa">
+          <ion-select-option value="BHR 20H">BHR 20H</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Fecha" type="date" formControlName="refill_date"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea label="Kilometraje" formControlName="mileage"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Valor" type="number" placeholder="Ingrese el dinero" formControlName="value"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input>PHOTOOOO</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-button (click)="onSubmit()">{{ isEditMode ? 'Actualizar tanqueo' : 'Agregar tanqueo'
+          }}</ion-button>
+      </ion-item>
+
+    </ion-list>
+
+  </form>
+
+</ion-content>

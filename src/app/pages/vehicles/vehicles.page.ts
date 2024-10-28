@@ -7,7 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VehiclesPage implements OnInit {
 
+  activeTabs: number[] = []; 
+  subTabs: string[] = ["Impuestos", "Mantenimientos", "Tanqueos"];
+
   constructor() { }
+
+
 
   ngOnInit() {
   }

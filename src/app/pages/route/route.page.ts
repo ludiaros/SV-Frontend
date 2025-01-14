@@ -30,7 +30,6 @@ export class RoutePage implements OnInit {
 
   async loadRoutes() {
     this.routes = await this.api.getRoute();
-    console.log(this.routes);
     
     const uniqueRouteNames: { [key: string]: boolean } = {};
   

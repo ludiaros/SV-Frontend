@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { VehiclesPageRoutingModule } from './vehicles-routing.module';
 
 import { VehiclesPage } from './vehicles.page';
+import { CardTaxComponent } from 'src/app/components/card-tax/card-tax.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { VehiclesPage } from './vehicles.page';
     IonicModule,
     VehiclesPageRoutingModule
   ],
-  declarations: [VehiclesPage]
+  declarations: [VehiclesPage, CardTaxComponent]
 })
 export class VehiclesPageModule {}

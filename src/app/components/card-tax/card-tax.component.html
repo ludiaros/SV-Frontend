@@ -1,0 +1,36 @@
+<ion-card *ngFor="let tax of taxes">
+  <ion-card-header>
+    <ion-card-title class="ion-no-padding">
+      <ion-grid class="ion-no-padding">
+        <ion-row class="ion-no-padding">
+          <ion-col class="ion-text-start">
+            <ion-text>{{tax.obligation_description}}</ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content class="ion-padding-start">
+    <ion-grid color="success">
+      <ion-row>
+        <ion-col>
+          <ion-text>Vence</ion-text>
+        </ion-col>
+
+        <ion-col>
+          <ion-text>Valor a pagar</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text>{{tax.expiration_date}}</ion-text>
+        </ion-col>
+
+        <ion-col>
+          <ion-text color="danger">$ {{tax.last_payment|number: '1.0-0'}}</ion-text>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>

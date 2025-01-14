@@ -7,14 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VehiclesPage implements OnInit {
 
-  activeTabs: number[] = []; 
-  subTabs: string[] = ["Impuestos", "Mantenimientos", "Tanqueos"];
+  activeTab: number = 0;
+  subTabs: string[] = ["Obligaciones", "Mantenimientos", "Tanqueos"];
 
   constructor() { }
 
-
-
   ngOnInit() {
+  }
+
+  toggleTab(tabName: string) {
+    const tabIndex = this.subTabs.indexOf(tabName);
+    if (tabIndex !== -1) {
+      // this.activeTab = this.activeTab === tabIndex ? -1 : tabIndex;
+      this.activeTab = tabIndex;
+    }
   }
 
 }

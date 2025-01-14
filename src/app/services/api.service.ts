@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class ApiService {
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {}
+  constructor(private http: HttpClient, private tokenService: TokenService) { }
 
   async registerToken() {
     const token = await this.tokenService.getToken();
@@ -46,6 +46,16 @@ export class ApiService {
     return this.http.get(`${environment.apiUrl}/referral`, { headers }).toPromise();
   }
 
+  async getTax() {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${environment.apiUrl}/tax`, { headers }).toPromise();
+  }
+
+  async getTank() {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${environment.apiUrl}/tank`, { headers }).toPromise();
+  }
+
   async deleteIncome(incomeId: number) {
     const options = await this.getHttpOptions(
       'PUT',
@@ -59,6 +69,15 @@ export class ApiService {
     const options = await this.getHttpOptions(
       'PUT',
       `${environment.apiUrl}/outcome/${outcomeId}/delete`
+    );
+    const response: HttpResponse = await CapacitorHttp.put(options);
+    return response.data;
+  }
+
+  async deleteTank(tankId: number) {
+    const options = await this.getHttpOptions(
+      'PUT',
+      `${environment.apiUrl}/tank/${tankId}/delete`
     );
     const response: HttpResponse = await CapacitorHttp.put(options);
     return response.data;
@@ -95,11 +114,21 @@ export class ApiService {
 
   async addObservation(observationData: any, type: string, id: number) {
     const options = await this.getHttpOptions(
-      'PUT', 
+      'PUT',
       `${environment.apiUrl}/referral/${type}/${id}`,
       observationData
     );
     const response: HttpResponse = await CapacitorHttp.put(options);
+    return response.data;
+  }
+
+  async addTank(tankData: any) {
+    const options = await this.getHttpOptions(
+      'POST',
+      `${environment.apiUrl}/tank`,
+      tankData
+    );
+    const response: HttpResponse = await CapacitorHttp.post(options);
     return response.data;
   }
 
@@ -130,6 +159,15 @@ export class ApiService {
     return response.data;
   }
 
+  async getTankById(tankId: number) {
+    const options = await this.getHttpOptionsWithoutBody(
+      'GET',
+      `${environment.apiUrl}/tank/${tankId}`
+    );
+    const response: HttpResponse = await CapacitorHttp.get(options);
+    return response.data;
+  }
+
   async updateIncome(incomeId: number, incomeData: any) {
     const options = await this.getHttpOptions(
       'PATCH',
@@ -145,6 +183,16 @@ export class ApiService {
       'PATCH',
       `${environment.apiUrl}/outcome/${outcomeId}`,
       outcomeData
+    );
+    const response: HttpResponse = await CapacitorHttp.put(options);
+    return response.data;
+  }
+
+  async updateTank(tankId: number, tankData: any) {
+    const options = await this.getHttpOptions(
+      'PATCH',
+      `${environment.apiUrl}/tank/${tankId}`,
+      tankData
     );
     const response: HttpResponse = await CapacitorHttp.put(options);
     return response.data;

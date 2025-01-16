@@ -23,4 +23,12 @@ export class VehiclesPage implements OnInit {
     }
   }
 
+  async search($event: any) {
+    return 0;
+  }
+
+  async add($event: any) {
+    return 0;
+  }
+
 }

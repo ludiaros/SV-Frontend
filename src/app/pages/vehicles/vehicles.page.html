@@ -1,4 +1,22 @@
 <ion-header [translucent]="true">
+  <ion-toolbar *ngIf="activeTab === 1 || activeTab === 2">
+    <ion-input 
+      class="ion-margin-horizontal" 
+      slot="start" 
+      placeholder="Buscar tanqueos..." 
+      (ionChange)="search($event)" 
+      clearInput>
+    </ion-input>
+    <ion-buttons slot="end">
+      <ion-button size="small" (click)="add($event)">
+        <ion-icon aria-hidden="true" name="calendar"></ion-icon>
+      </ion-button>
+      <ion-button size="small" (click)="add($event)">
+        <ion-icon aria-hidden="true" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
   <div class="ion-text-center">
     <ion-button 
       *ngFor="let subTab of subTabs; let i = index" 
@@ -19,6 +37,7 @@
       <!-- Contenido futuro para mantenimientos -->
     </div>
     <div *ngSwitchCase="2">
+      <app-card-tank></app-card-tank>
       <!-- Contenido futuro para tanqueos -->
     </div>
   </div>

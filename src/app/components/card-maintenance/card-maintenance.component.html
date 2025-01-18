@@ -1,17 +1,17 @@
-<ion-card *ngFor="let tank of tanks">
+<ion-card *ngFor="let maintenance of maintenances">
   <ion-card-header>
     <ion-card-title class="ion-no-padding">
       <ion-grid class="ion-no-padding">
         <ion-row class="ion-no-padding">
           <ion-col class="ion-text-start">
-            <ion-text>{{tank.date}}</ion-text>
+            <ion-text>{{maintenance.date}}</ion-text>
           </ion-col>
         </ion-row>
       </ion-grid>
     </ion-card-title>
   </ion-card-header>
   <ion-card-content class="ion-no-padding ion-padding-start">
-    <ion-text>{{tank.tank_description}}</ion-text>
+    <ion-text>{{maintenance.maintenance_description}}</ion-text>
     <ion-grid color="success">
       <ion-row>
         <ion-col>
@@ -28,15 +28,15 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-text>{{tank.mileage}}</ion-text>
+          <ion-text>{{maintenance.mileage}}</ion-text>
         </ion-col>
 
         <ion-col>
-          <ion-text color="danger">$ {{tank.paid|number: '1.0-0'}}</ion-text>
+          <ion-text color="danger">$ {{maintenance.paid|number: '1.0-0'}}</ion-text>
         </ion-col>
 
         <ion-col>
-          <ion-text>{{tank.plate}}</ion-text>
+          <ion-text>{{maintenance.plate}}</ion-text>
         </ion-col>
 
       </ion-row>
@@ -44,8 +44,8 @@
 
   </ion-card-content>
   <div>
-    <ion-button (click)="edit($event, tank.tank_id)" fill="clear">Editar</ion-button>
-    <ion-button fill="clear" id="open-toast" (click)="delete($event, tank.tank_id)">Eliminar</ion-button>
+    <ion-button (click)="edit($event, maintenance.maintenance_id)" fill="clear">Editar</ion-button>
+    <ion-button fill="clear" id="open-toast" (click)="delete($event, maintenance.maintenance_id)">Eliminar</ion-button>
   </div>
 
 </ion-card>

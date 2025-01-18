@@ -1,35 +1,47 @@
 <ion-content class="ion-padding">
-  <form action="" (ngSubmit)="onSubmit()" [formGroup]="tankForm">
+  <form (ngSubmit)="onSubmit()" [formGroup]="tankForm">
     <ion-list>
-
       <ion-item>
-        <ion-select label="Vehiculo" placeholder="Placa">
-          <ion-select-option value="BHR 20H">BHR 20H</ion-select-option>
+        <ion-select label="Vehiculo" placeholder="Placa" formControlName="plate">
+          <ion-select-option value="ETK270">ETK270</ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
-        <ion-input label="Fecha" type="date" formControlName="refill_date"></ion-input>
+        <ion-input label="Fecha" type="date" formControlName="date"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-textarea label="Kilometraje" formControlName="mileage"></ion-textarea>
+        <ion-textarea label="Descripcion" placeholder="(No obligatorio)" formControlName="tank_description"></ion-textarea>
       </ion-item>
 
       <ion-item>
-        <ion-input label="Valor" type="number" placeholder="Ingrese el dinero" formControlName="value"></ion-input>
+        <ion-input label="Kilometraje" type="number" placeholder="Ej: 6000km" formControlName="mileage"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input>PHOTOOOO</ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-button (click)="onSubmit()">{{ isEditMode ? 'Actualizar tanqueo' : 'Agregar tanqueo'
-          }}</ion-button>
+        <ion-input label="Valor" type="number" placeholder="Costo del tanqueo" formControlName="paid"></ion-input>
       </ion-item>
 
+      <ion-item lines="none">
+        <ion-button expand="block" (click)="selectImageSource()" type="button">
+          <ion-icon name="image-outline" slot="start"></ion-icon>
+          Seleccionar Foto
+        </ion-button>
+      </ion-item>
+
+      <!-- Vista previa de la imagen -->
+      <ion-item lines="none" *ngIf="selectedImage" class="ion-margin-top">
+        <div class="selected-image">
+          <img [src]="selectedImage" alt="Foto seleccionada">
+        </div>
+      </ion-item>
+
+      <ion-item lines="none" class="ion-margin-top">
+        <ion-button expand="block" (click)="onSubmit()">
+          {{ isEditMode ? 'Actualizar tanqueo' : 'Agregar tanqueo' }}
+        </ion-button>
+      </ion-item>
     </ion-list>
-
   </form>
-
 </ion-content>

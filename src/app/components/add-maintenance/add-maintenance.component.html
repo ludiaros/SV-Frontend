@@ -1,0 +1,33 @@
+<ion-content class="ion-padding">
+  <form (ngSubmit)="onSubmit()" [formGroup]="maintenanceForm">
+    <ion-list>
+      <ion-item>
+        <ion-select label="Vehiculo" placeholder="Placa" formControlName="plate">
+          <ion-select-option value="ETK270">ETK270</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Fecha" type="date" formControlName="date"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea label="Descripcion" placeholder="Campo obligatorio*"
+          formControlName="maintenance_description"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Kilometraje" type="number" placeholder="Ej: 6000km" formControlName="mileage"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Valor" type="number" placeholder="Costo del mantenimiento" formControlName="paid"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-button (click)="onSubmit()">{{ isEditMode ? 'Actualizar mantenimiento' : 'Agregar mantenimiento'
+          }}</ion-button>
+      </ion-item>
+
+    </ion-list>
+  </form>
+</ion-content>

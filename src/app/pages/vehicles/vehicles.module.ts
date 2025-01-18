@@ -9,6 +9,7 @@ import { VehiclesPageRoutingModule } from './vehicles-routing.module';
 import { VehiclesPage } from './vehicles.page';
 import { CardTaxComponent } from 'src/app/components/card-tax/card-tax.component';
 import { CardTankComponent } from 'src/app/components/card-tank/card-tank.component';
+import { CardMaintenanceComponent } from 'src/app/components/card-maintenance/card-maintenance.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { CardTankComponent } from 'src/app/components/card-tank/card-tank.compon
     IonicModule,
     VehiclesPageRoutingModule
   ],
-  declarations: [VehiclesPage, CardTaxComponent, CardTankComponent]
+  declarations: [VehiclesPage, CardTaxComponent, CardTankComponent, CardMaintenanceComponent]
 })
 export class VehiclesPageModule {}

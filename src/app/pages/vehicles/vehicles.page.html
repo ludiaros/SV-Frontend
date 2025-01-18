@@ -1,14 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar *ngIf="activeTab === 1 || activeTab === 2">
-    <ion-input 
-      class="ion-margin-horizontal" 
-      slot="start" 
-      placeholder="Buscar tanqueos..." 
-      (ionChange)="search($event)" 
+    <ion-input class="ion-margin-horizontal" slot="start" placeholder="Buscar tanqueos..." (ionChange)="search($event)"
       clearInput>
     </ion-input>
     <ion-buttons slot="end">
-      <ion-button size="small" (click)="add($event)">
+      <ion-button size="small" (click)="filterDate($event)">
         <ion-icon aria-hidden="true" name="calendar"></ion-icon>
       </ion-button>
       <ion-button size="small" (click)="add($event)">
@@ -18,11 +14,8 @@
   </ion-toolbar>
 
   <div class="ion-text-center">
-    <ion-button 
-      *ngFor="let subTab of subTabs; let i = index" 
-      [fill]="activeTab === i ? 'solid' : 'clear'"
-      (click)="toggleTab(subTab)" 
-      [ngClass]="{'single-tab': subTabs.length === 1, 'multiple-tabs': subTabs.length > 1}">
+    <ion-button *ngFor="let subTab of subTabs; let i = index" [fill]="activeTab === i ? 'solid' : 'clear'"
+      (click)="toggleTab(subTab)" [ngClass]="{'single-tab': subTabs.length === 1, 'multiple-tabs': subTabs.length > 1}">
       {{ subTab }}
     </ion-button>
   </div>
@@ -34,11 +27,10 @@
       <app-card-tax></app-card-tax>
     </div>
     <div *ngSwitchCase="1">
-      <!-- Contenido futuro para mantenimientos -->
+      <app-card-maintenance></app-card-maintenance>
     </div>
     <div *ngSwitchCase="2">
       <app-card-tank></app-card-tank>
-      <!-- Contenido futuro para tanqueos -->
     </div>
   </div>
 </ion-content>

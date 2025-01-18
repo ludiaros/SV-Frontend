@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController, ToastController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
-import { AddGasolineTankComponent } from '../add-gasoline-tank/add-gasoline-tank.component';
+import { AddMaintenanceComponent } from '../add-maintenance/add-maintenance.component';
 
 @Component({
-  selector: 'app-card-tank',
-  templateUrl: './card-tank.component.html',
-  styleUrls: ['./card-tank.component.scss'],
+  selector: 'app-card-maintenance',
+  templateUrl: './card-maintenance.component.html',
+  styleUrls: ['./card-maintenance.component.scss'],
 })
-export class CardTankComponent  implements OnInit {
+export class CardMaintenanceComponent implements OnInit {
 
-  tanks: any
-  tankIdToDelete!: number;
+  maintenances: any
+  maintenanceIdToDelete!: number;
 
   constructor(
     private api: ApiService,
@@ -20,34 +20,34 @@ export class CardTankComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadTanks();
+    this.loadMaintenance();
   }
 
-  async loadTanks() {
-    this.tanks = await this.api.getTank();
+  async loadMaintenance() {
+    this.maintenances = await this.api.getMaintenance();
   }
 
-  async edit(event: Event, tankId: number) {
+  async edit(event: Event, maintenanceId: number) {
     const popover = await this.popoverController.create({
-      component: AddGasolineTankComponent,
+      component: AddMaintenanceComponent,
       event: event,
       cssClass: 'custom-popover-class',
       side: 'bottom',
       alignment: 'center',
       componentProps: {
-        'tankId': tankId
+        'maintenanceId': maintenanceId
       }
     });
 
     popover.onDidDismiss().then(async () => {
-      await this.loadTanks();
+      await this.loadMaintenance();
     });
 
     await popover.present();
   }
 
-  async delete(event: Event, tankId: number) {
-    this.tankIdToDelete = tankId;
+  async delete(event: Event, maintenanceId: number) {
+    this.maintenanceIdToDelete = maintenanceId;
     const toast = await this.toastController.create({
       position: 'middle',
       message: '¿Desea eliminar el registro?',
@@ -58,10 +58,10 @@ export class CardTankComponent  implements OnInit {
     await toast.present();
   }
 
-  deleteTank(tankId: number) {
-    this.api.deleteTank(tankId).then(async response => {
+  deleteMaintenance(maintenanceId: number) {
+    this.api.deleteTank(maintenanceId).then(async response => {
       console.log('Tank eliminado', response);
-      this.tanks = await this.api.getTank();
+      this.maintenances = await this.api.getTank();
     }).catch(error => {
       console.error('Error al eliminar gasto', error);
     });
@@ -72,7 +72,7 @@ export class CardTankComponent  implements OnInit {
       text: 'Sí',
       role: 'info',
       handler: () => {
-        this.deleteTank(this.tankIdToDelete);
+        this.deleteMaintenance(this.maintenanceIdToDelete);
       }
     },
     {
@@ -80,4 +80,5 @@ export class CardTankComponent  implements OnInit {
       role: 'cancel',
     },
   ];
+
 }

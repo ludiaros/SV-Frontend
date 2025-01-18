@@ -56,6 +56,11 @@ export class ApiService {
     return this.http.get(`${environment.apiUrl}/tank`, { headers }).toPromise();
   }
 
+  async getMaintenance() {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${environment.apiUrl}/maintenance`, { headers }).toPromise();
+  }
+
   async deleteIncome(incomeId: number) {
     const options = await this.getHttpOptions(
       'PUT',
@@ -78,6 +83,15 @@ export class ApiService {
     const options = await this.getHttpOptions(
       'PUT',
       `${environment.apiUrl}/tank/${tankId}/delete`
+    );
+    const response: HttpResponse = await CapacitorHttp.put(options);
+    return response.data;
+  }
+
+  async deleteMaintenance(maintenanceId: number) {
+    const options = await this.getHttpOptions(
+      'PUT',
+      `${environment.apiUrl}/maintenance/${maintenanceId}/delete`
     );
     const response: HttpResponse = await CapacitorHttp.put(options);
     return response.data;
@@ -132,6 +146,16 @@ export class ApiService {
     return response.data;
   }
 
+  async addMaintenance(maintenanceData: any) {
+    const options = await this.getHttpOptions(
+      'POST',
+      `${environment.apiUrl}/maintenance`,
+      maintenanceData
+    );
+    const response: HttpResponse = await CapacitorHttp.post(options);
+    return response.data;
+  }
+
   async getIncomeById(incomeId: number) {
     const options = await this.getHttpOptionsWithoutBody(
       'GET',
@@ -168,6 +192,15 @@ export class ApiService {
     return response.data;
   }
 
+  async getMaintenanceById(maintenanceId: number) {
+    const options = await this.getHttpOptionsWithoutBody(
+      'GET',
+      `${environment.apiUrl}/maintenance/${maintenanceId}`
+    );
+    const response: HttpResponse = await CapacitorHttp.get(options);
+    return response.data;
+  }
+
   async updateIncome(incomeId: number, incomeData: any) {
     const options = await this.getHttpOptions(
       'PATCH',
@@ -193,6 +226,16 @@ export class ApiService {
       'PATCH',
       `${environment.apiUrl}/tank/${tankId}`,
       tankData
+    );
+    const response: HttpResponse = await CapacitorHttp.put(options);
+    return response.data;
+  }
+
+  async updateMaintenance(maintenanceId: number, maintenanceData: any) {
+    const options = await this.getHttpOptions(
+      'PATCH',
+      `${environment.apiUrl}/maintenance/${maintenanceId}`,
+      maintenanceData
     );
     const response: HttpResponse = await CapacitorHttp.put(options);
     return response.data;

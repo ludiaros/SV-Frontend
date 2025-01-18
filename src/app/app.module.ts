@@ -13,9 +13,10 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { AddObservationComponent } from './components/add-observation/add-observation.component';
 import { AddGasolineTankComponent } from './components/add-gasoline-tank/add-gasoline-tank.component';
+import { AddMaintenanceComponent } from './components/add-maintenance/add-maintenance.component';
 
 @NgModule({
-  declarations: [AppComponent, AddIncomeComponent, AddOutcomeComponent, AddObservationComponent, AddGasolineTankComponent],
+  declarations: [AppComponent, AddIncomeComponent, AddOutcomeComponent, AddObservationComponent, AddGasolineTankComponent, AddMaintenanceComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, IonicStorageModule.forRoot()],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, provideHttpClient() ],
   bootstrap: [AppComponent],

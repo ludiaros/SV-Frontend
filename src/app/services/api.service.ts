@@ -262,6 +262,22 @@ export class ApiService {
     }).toPromise();
   }
 
+  async searchTanksByDescription(description: string): Promise<any> {
+    return this.getTank().then((tanks: any) => {
+      return tanks.filter((tank: any) => 
+        tank.tank_description.toLowerCase().includes(description.toLowerCase())
+      );
+    });
+  }
+
+  async searchMaintenanceByDescription(description: string): Promise<any> {
+    return this.getMaintenance().then((maintenances: any) => {
+      return maintenances.filter((maintenance: any) => 
+        maintenance.maintenance_description.toLowerCase().includes(description.toLowerCase())
+      );
+    });
+  }
+
   private async getAuthHeaders() {
     const token = await this.tokenService.getToken();
     return new HttpHeaders({

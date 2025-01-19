@@ -31,6 +31,14 @@ export class CardMaintenanceComponent implements OnInit {
     this.maintenances = await this.api.getMaintenanceByDateRange(startDate, endDate);  
   }
 
+  async filterByDescription(description: string) {
+    if (!description) {
+      await this.loadMaintenance();
+      return;
+    }
+    this.maintenances = await this.api.searchMaintenanceByDescription(description);
+  }
+
   async edit(event: Event, maintenanceId: number) {
     const popover = await this.popoverController.create({
       component: AddMaintenanceComponent,

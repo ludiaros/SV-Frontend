@@ -32,6 +32,14 @@ export class CardTankComponent  implements OnInit {
     this.tanks = await this.api.getTankByDateRange(startDate, endDate);
   }
 
+  async filterByDescription(description: string) {
+    if (!description) {
+      await this.loadTanks();
+      return;
+    }
+    this.tanks = await this.api.searchTanksByDescription(description);
+  }
+
   async edit(event: Event, tankId: number) {
     const popover = await this.popoverController.create({
       component: AddGasolineTankComponent,

@@ -37,7 +37,13 @@ export class VehiclesPage implements OnInit {
   }
 
   async search(event: Event) {
-    return;
+    const searchTerm = (event.target as HTMLInputElement).value;
+    
+    if (this.activeTab === 1) {
+      await this.CardMaintenanceComponent.filterByDescription(searchTerm);
+    } else if (this.activeTab === 2) {
+      await this.cardTankComponent.filterByDescription(searchTerm);
+    }
   }
 
   async filterDate(event: Event) {

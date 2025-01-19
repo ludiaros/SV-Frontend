@@ -15,6 +15,7 @@ export class AddMaintenanceComponent implements OnInit {
 
   maintenanceForm: FormGroup;
   isEditMode: boolean = false;
+  vehicles: any;
 
   constructor(
     private fb: FormBuilder,
@@ -29,10 +30,27 @@ export class AddMaintenanceComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    await this.loadVehicles();
+
     if (this.maintenanceId) {
       this.isEditMode = true;
       this.loadMaintenanceDetails(this.maintenanceId);
+    } else {
+      if (this.vehicles.length > 0) {
+        this.maintenanceForm.patchValue({
+          plate: this.vehicles[0].plate
+        });
+      }
+    }
+  }
+
+  async loadVehicles(): Promise<void> {
+    try {
+      this.vehicles = await this.api.getVehicles();
+    } catch (error) {
+      console.error('Error al cargar los vehículos:', error);
     }
   }
 

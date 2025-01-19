@@ -19,6 +19,7 @@ export class AddGasolineTankComponent implements OnInit {
   tankForm: FormGroup;
   isEditMode: boolean = false;
   selectedImage: string | null = null;
+  vehicles: any;
 
   constructor(private fb: FormBuilder,
     private api: ApiService,
@@ -35,10 +36,26 @@ export class AddGasolineTankComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.loadVehicles();
+
     if (this.tankId) {
       this.isEditMode = true;
       this.loadTankDetails(this.tankId);
+    }else {
+      if (this.vehicles.length > 0) {
+        this.tankForm.patchValue({
+          plate: this.vehicles[0].plate
+        });
+      }
+    }
+  }
+
+  async loadVehicles(): Promise<void> {
+    try {
+      this.vehicles = await this.api.getVehicles();
+    } catch (error) {
+      console.error('Error al cargar los vehículos:', error);
     }
   }
 

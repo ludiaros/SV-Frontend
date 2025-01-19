@@ -1,15 +1,13 @@
 <ion-content class="ion-padding">
   <ion-item>
-    <ion-label position="stacked">Fecha Inicial</ion-label>
-    <ion-input type="date" [(ngModel)]="startDate"></ion-input>
+    <ion-input label="Desde" type="date" [(ngModel)]="startDate"></ion-input>
   </ion-item>
 
   <ion-item>
-    <ion-label position="stacked">Fecha Final</ion-label>
-    <ion-input type="date" [(ngModel)]="endDate"></ion-input>
+    <ion-input label="Hasta" type="date" [(ngModel)]="endDate"></ion-input>
   </ion-item>
 
   <ion-button expand="block" (click)="applyFilter()" class="ion-margin-top">
-    Aplicar Filtro
+    Filtrar por fecha
   </ion-button>
 </ion-content>

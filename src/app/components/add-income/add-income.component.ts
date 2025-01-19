@@ -24,7 +24,7 @@ export class AddIncomeComponent implements OnInit {
     this.incomeForm = this.fb.group({
       movement_date: ['', Validators.required],
       category_id: ['29', Validators.required],
-      details: ['', Validators.required],
+      details: [''],
       income: ['', Validators.required],
     });
   }

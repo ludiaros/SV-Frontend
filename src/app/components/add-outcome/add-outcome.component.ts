@@ -25,7 +25,7 @@ export class AddOutcomeComponent implements OnInit {
     this.outcomeForm = this.fb.group({
       movement_date: ['', Validators.required],
       category_id: ['3', Validators.required],
-      details: ['', Validators.required],
+      details: [''],
       outcome: ['', Validators.required]
     });
   }

@@ -25,6 +25,11 @@ export class CardTankComponent  implements OnInit {
 
   async loadTanks() {
     this.tanks = await this.api.getTank();
+    
+  }
+
+  async filterByDate(startDate: string, endDate: string) {
+    this.tanks = await this.api.getTankByDateRange(startDate, endDate);
   }
 
   async edit(event: Event, tankId: number) {

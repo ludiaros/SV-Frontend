@@ -14,6 +14,7 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { AddObservationComponent } from './components/add-observation/add-observation.component';
 import { AddGasolineTankComponent } from './components/add-gasoline-tank/add-gasoline-tank.component';
 import { AddMaintenanceComponent } from './components/add-maintenance/add-maintenance.component';
+import { DateFilterComponent } from './components/date-filter/date-filter.component';
 
 @NgModule({
   declarations: [AppComponent, AddIncomeComponent, AddOutcomeComponent, AddObservationComponent, AddGasolineTankComponent, AddMaintenanceComponent],

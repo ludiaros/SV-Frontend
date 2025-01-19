@@ -246,6 +246,22 @@ export class ApiService {
     return response.data;
   }
 
+  async getMaintenanceByDateRange(startDate: string, endDate: string) {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${environment.apiUrl}/maintenance`, { 
+      headers,
+      params: { start_date: startDate, end_date: endDate }
+    }).toPromise();
+  }
+
+  async getTankByDateRange(startDate: string, endDate: string) {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${environment.apiUrl}/tank`, { 
+      headers,
+      params: { start_date: startDate, end_date: endDate }
+    }).toPromise();
+  }
+
   private async getAuthHeaders() {
     const token = await this.tokenService.getToken();
     return new HttpHeaders({

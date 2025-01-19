@@ -10,6 +10,7 @@ import { VehiclesPage } from './vehicles.page';
 import { CardTaxComponent } from 'src/app/components/card-tax/card-tax.component';
 import { CardTankComponent } from 'src/app/components/card-tank/card-tank.component';
 import { CardMaintenanceComponent } from 'src/app/components/card-maintenance/card-maintenance.component';
+import { DateFilterComponent } from 'src/app/components/date-filter/date-filter.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { CardMaintenanceComponent } from 'src/app/components/card-maintenance/ca
     IonicModule,
     VehiclesPageRoutingModule
   ],
-  declarations: [VehiclesPage, CardTaxComponent, CardTankComponent, CardMaintenanceComponent]
+  declarations: [VehiclesPage, CardTaxComponent, CardTankComponent, CardMaintenanceComponent, DateFilterComponent]
 })
 export class VehiclesPageModule {}

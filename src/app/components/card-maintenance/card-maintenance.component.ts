@@ -71,11 +71,11 @@ export class CardMaintenanceComponent implements OnInit {
   }
 
   deleteMaintenance(maintenanceId: number) {
-    this.api.deleteTank(maintenanceId).then(async response => {
-      console.log('Tank eliminado', response);
-      this.maintenances = await this.api.getTank();
+    this.api.deleteMaintenance(maintenanceId).then(async response => {
+      console.log('Mantenimiento eliminado', response);
+      this.maintenances = await this.api.getMaintenance();
     }).catch(error => {
-      console.error('Error al eliminar gasto', error);
+      console.error('Error al eliminar mantenimiento', error);
     });
   }
 

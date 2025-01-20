@@ -33,10 +33,10 @@ export class IncomePage {
   }
 
   search($event: any) {
-    let keyword = $event.target.value.toUpperCase();
+    let keyword = $event.target.value.toLowerCase();
 
     this.filteredMovements = this.movements.filter((movement: any) =>
-      movement.details.includes(keyword)
+      movement.details.toLowerCase().includes(keyword)
     );
   }
 

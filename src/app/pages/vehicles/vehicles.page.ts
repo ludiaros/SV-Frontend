@@ -38,6 +38,7 @@ export class VehiclesPage implements OnInit {
 
   async search(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value;
+    console.log(searchTerm);
     
     if (this.activeTab === 1) {
       await this.CardMaintenanceComponent.filterByDescription(searchTerm);

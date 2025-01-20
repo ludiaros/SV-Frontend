@@ -21,8 +21,10 @@ export class AddIncomeComponent implements OnInit {
     private api: ApiService,
     private popoverController: PopoverController
   ) {
+    const today = new Date().toISOString().split('T')[0];
+
     this.incomeForm = this.fb.group({
-      movement_date: ['', Validators.required],
+      movement_date: [today, Validators.required],
       category_id: ['29', Validators.required],
       details: ['', Validators.required],
       income: ['', Validators.required],

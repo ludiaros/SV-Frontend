@@ -21,10 +21,13 @@ export class AddMaintenanceComponent implements OnInit {
     private fb: FormBuilder,
     private api: ApiService,
     private popoverController: PopoverController) {
+
+    const today = new Date().toISOString().split('T')[0];
+
     this.maintenanceForm = this.fb.group({
       plate: ['', Validators.required],
       maintenance_description: [''],
-      date: ['', Validators.required],
+      date: [today, Validators.required],
       mileage: ['', Validators.required],
       paid: ['', Validators.required]
     });
@@ -83,7 +86,7 @@ export class AddMaintenanceComponent implements OnInit {
     } else {
 
       this.api.addMaintenance(this.maintenanceForm.value).then(() => {
-        
+
       }).catch(error => {
         console.error('Error al agregar el mantenimiento: ', error);
       });

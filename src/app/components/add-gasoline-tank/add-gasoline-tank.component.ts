@@ -26,10 +26,13 @@ export class AddGasolineTankComponent implements OnInit {
     private popoverController: PopoverController,
     public photoService: PhotoService,
     private actionSheetController: ActionSheetController) {
+
+    const today = new Date().toISOString().split('T')[0];
+
     this.tankForm = this.fb.group({
       plate: ['', Validators.required],
       tank_description: [''],
-      date: ['', Validators.required],
+      date: [today, Validators.required],
       mileage: ['', Validators.required],
       paid: ['', Validators.required],
       photo: [''],

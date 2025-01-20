@@ -22,8 +22,9 @@ export class AddOutcomeComponent implements OnInit {
     private api: ApiService,
     private popoverController: PopoverController,
   ) {
+    const today = new Date().toISOString().split('T')[0];
     this.outcomeForm = this.fb.group({
-      movement_date: ['', Validators.required],
+      movement_date: [today, Validators.required],
       category_id: ['3', Validators.required],
       details: ['', Validators.required],
       outcome: ['', Validators.required]

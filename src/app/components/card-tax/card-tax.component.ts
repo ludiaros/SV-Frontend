@@ -21,4 +21,12 @@ export class CardTaxComponent  implements OnInit {
   async loadTax() {
     this.taxes = await this.api.getTax();
   }
+
+  async filterByDescription(description: string) {
+    if (!description) {
+      await this.loadTax();
+      return;
+    }
+    this.taxes = await this.api.searchTaxesByDescription(description);
+  }
 }

@@ -262,6 +262,14 @@ export class ApiService {
     }).toPromise();
   }
 
+  async searchTaxesByDescription(description: string): Promise<any> {
+    return this.getTax().then((tax: any) => {
+      return tax.filter((tax: any) => 
+        tax.obligation_description.toLowerCase().includes(description.toLowerCase())
+      );
+    });
+  }
+
   async searchTanksByDescription(description: string): Promise<any> {
     return this.getTank().then((tanks: any) => {
       return tanks.filter((tank: any) => 

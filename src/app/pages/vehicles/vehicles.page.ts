@@ -4,6 +4,7 @@ import { AddGasolineTankComponent } from 'src/app/components/add-gasoline-tank/a
 import { AddMaintenanceComponent } from 'src/app/components/add-maintenance/add-maintenance.component';
 import { CardMaintenanceComponent } from 'src/app/components/card-maintenance/card-maintenance.component';
 import { CardTankComponent } from 'src/app/components/card-tank/card-tank.component';
+import { CardTaxComponent } from 'src/app/components/card-tax/card-tax.component';
 import { DateFilterComponent } from 'src/app/components/date-filter/date-filter.component';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -16,6 +17,7 @@ export class VehiclesPage implements OnInit {
 
   @ViewChild(CardTankComponent) cardTankComponent!: CardTankComponent;
   @ViewChild(CardMaintenanceComponent) CardMaintenanceComponent!: CardMaintenanceComponent;
+  @ViewChild(CardTaxComponent) cardTaxComponent!: CardTaxComponent;
 
   activeTab: number = 0;
   subTabs: string[] = ["Obligaciones", "Mantenimientos", "Tanqueos"];
@@ -38,12 +40,13 @@ export class VehiclesPage implements OnInit {
 
   async search(event: Event) {
     const searchTerm = (event.target as HTMLInputElement).value;
-    console.log(searchTerm);
     
     if (this.activeTab === 1) {
       await this.CardMaintenanceComponent.filterByDescription(searchTerm);
     } else if (this.activeTab === 2) {
       await this.cardTankComponent.filterByDescription(searchTerm);
+    } else if (this.activeTab === 0) {
+      await this.cardTaxComponent.filterByDescription(searchTerm);
     }
   }
 

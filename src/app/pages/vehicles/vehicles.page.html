@@ -7,7 +7,7 @@
       <ion-button size="small" (click)="filterDate($event)">
         <ion-icon aria-hidden="true" name="calendar"></ion-icon>
       </ion-button>
-      <ion-button size="small" (click)="add($event)">
+      <ion-button size="small" (click)="add($event)" *ngIf="activeTab !== 0">
         <ion-icon aria-hidden="true" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>

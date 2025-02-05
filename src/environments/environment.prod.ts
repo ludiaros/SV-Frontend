@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://181.52.244.110:81/rosalconduct/public/api'
+  apiUrl: 'http://viveroelrosal.tplinkdns.com:81/rosalconduct/public/api'
 };

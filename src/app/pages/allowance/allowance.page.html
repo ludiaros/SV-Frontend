@@ -11,8 +11,13 @@
         <ion-card-title class="ion-no-padding">
           <ion-grid class="ion-no-padding">
             <ion-row class="ion-no-padding">
-              <ion-col class="ion-text-start">
+              <ion-col size="10" class="ion-text-start">
                 <ion-text>{{movement.movement_date}}</ion-text>
+              </ion-col>
+              <ion-col size="2" class="ion-text-end">
+                <ion-button fill="clear" (click)="toggleDetails(movement.movement_id)">
+                  <ion-icon [name]="isExpanded(movement.movement_id) ? 'eye-off' : 'eye'"></ion-icon>
+                </ion-button>
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -49,6 +54,53 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+
+        <div *ngIf="expandedItems[movement.movement_id]" class="ion-padding">
+          <ion-list>
+            <div class="table-container">
+              <table class="accounting-table">
+                <thead>
+                  <tr>
+                    <th>Fecha <br> Detalle</th>
+                    <th class="amount-col">Ingresos</th>
+                    <th class="amount-col">Egresos</th>
+                    <th class="amount-col">Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let detail of expandedItems[movement.movement_id].movements">
+                    <td>{{detail.date}} <br> {{detail.details}}</td>
+                    <td class="amount-col success-text">
+                      {{ detail.type === 'Ingresos' ? (detail.value | number:'1.0-0') : '' }}
+                    </td>
+                    <td class="amount-col danger-text">
+                      {{ detail.type === 'Egresos' ? (detail.value | number:'1.0-0') : '' }}
+                    </td>
+                    <td class="amount-col" [class.danger-text]="detail.running_balance < 0" 
+                        [class.success-text]="detail.running_balance >= 0">
+                      {{detail.running_balance | number:'1.0-0'}}
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="total-row">
+                    <td><strong>TOTALES:</strong></td>
+                    <td class="amount-col success-text">
+                      <strong>$&nbsp;{{expandedItems[movement.movement_id].summary.totalIncome | number:'1.0-0'}}</strong>
+                    </td>
+                    <td class="amount-col danger-text">
+                      <strong>$&nbsp;{{expandedItems[movement.movement_id].summary.totalOutcome | number:'1.0-0'}}</strong>
+                    </td>
+                    <td class="amount-col" [class.danger-text]="expandedItems[movement.movement_id].summary.finalBalance < 0"
+                        [class.success-text]="expandedItems[movement.movement_id].summary.finalBalance >= 0">
+                      <strong>$&nbsp;{{expandedItems[movement.movement_id].summary.finalBalance | number:'1.0-0'}}</strong>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </ion-list>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

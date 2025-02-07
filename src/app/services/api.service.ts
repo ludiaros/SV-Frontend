@@ -161,6 +161,15 @@ export class ApiService {
     return response.data;
   }
 
+  async getAllowanceById(allowanceId: number) {
+    const options = await this.getHttpOptionsWithoutBody(
+      'GET',
+      `${environment.apiUrl}/allowance/${allowanceId}`
+    );
+    const response: HttpResponse = await CapacitorHttp.get(options);
+    return response.data;
+  }
+
   async getIncomeById(incomeId: number) {
     const options = await this.getHttpOptionsWithoutBody(
       'GET',

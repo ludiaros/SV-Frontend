@@ -1,0 +1,57 @@
+.table-container {
+  overflow-x: auto;
+  
+  .accounting-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-family: 'Courier New', Courier, monospace;
+    
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--ion-color-light);
+    }
+
+    th {
+      font-weight: bold;
+      background-color: var(--ion-color-light);
+      white-space: nowrap;
+    }
+
+    .date-col {
+      width: 100px;
+      white-space: nowrap;
+    }
+
+    .amount-col {
+      width: 120px;
+      text-align: right;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .success-text {
+      color: var(--ion-color-success);
+    }
+
+    .danger-text {
+      color: var(--ion-color-danger);
+    }
+
+    tfoot {
+      .total-row {
+        border-top: 2px solid var(--ion-color-medium);
+        border-bottom: double 3px var(--ion-color-medium);
+        background-color: var(--ion-color-light-shade);
+        
+        td {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}

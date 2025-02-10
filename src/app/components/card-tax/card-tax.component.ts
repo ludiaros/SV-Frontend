@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
   selector: 'app-card-tax',
   templateUrl: './card-tax.component.html',
   styleUrls: ['./card-tax.component.scss'],
+  standalone: false,
 })
 export class CardTaxComponent  implements OnInit {
 

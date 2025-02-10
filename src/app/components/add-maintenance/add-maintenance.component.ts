@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/services/api.service';
   selector: 'app-add-maintenance',
   templateUrl: './add-maintenance.component.html',
   styleUrls: ['./add-maintenance.component.scss'],
+  standalone: false,
 })
 export class AddMaintenanceComponent implements OnInit {
 

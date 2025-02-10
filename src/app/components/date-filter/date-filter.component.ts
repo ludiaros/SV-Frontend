@@ -5,6 +5,7 @@ import { PopoverController } from '@ionic/angular';
   selector: 'app-date-filter',
   templateUrl: './date-filter.component.html',
   styleUrls: ['./date-filter.component.scss'],
+  standalone: false,
 })
 export class DateFilterComponent {
   startDate: string = '';

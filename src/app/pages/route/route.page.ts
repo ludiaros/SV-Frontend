@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/services/api.service';
   selector: 'app-route',
   templateUrl: './route.page.html',
   styleUrls: ['./route.page.scss'],
+  standalone: false,
 })
 export class RoutePage implements OnInit {
   routes: any;

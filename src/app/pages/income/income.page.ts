@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
   selector: 'app-income',
   templateUrl: 'income.page.html',
   styleUrls: ['income.page.scss'],
+  standalone: false,
 })
 export class IncomePage {
   movements: any;

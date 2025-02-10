@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/services/api.service';
   selector: 'app-add-observation',
   templateUrl: './add-observation.component.html',
   styleUrls: ['./add-observation.component.scss'],
+  standalone: false,
 })
 export class AddObservationComponent implements OnInit {
 

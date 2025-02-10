@@ -12,6 +12,7 @@ import { ApiService } from 'src/app/services/api.service';
   selector: 'app-vehicles',
   templateUrl: './vehicles.page.html',
   styleUrls: ['./vehicles.page.scss'],
+  standalone: false,
 })
 export class VehiclesPage implements OnInit {
 

@@ -7,6 +7,7 @@ import { AddMaintenanceComponent } from '../add-maintenance/add-maintenance.comp
   selector: 'app-card-maintenance',
   templateUrl: './card-maintenance.component.html',
   styleUrls: ['./card-maintenance.component.scss'],
+  standalone: false,
 })
 export class CardMaintenanceComponent implements OnInit {
 

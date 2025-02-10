@@ -10,11 +10,10 @@ import { AddIncomeComponent } from './components/add-income/add-income.component
 import { AddOutcomeComponent } from './components/add-outcome/add-outcome.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage-angular';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { AddObservationComponent } from './components/add-observation/add-observation.component';
 import { AddGasolineTankComponent } from './components/add-gasoline-tank/add-gasoline-tank.component';
 import { AddMaintenanceComponent } from './components/add-maintenance/add-maintenance.component';
-import { DateFilterComponent } from './components/date-filter/date-filter.component';
 
 @NgModule({
   declarations: [AppComponent, AddIncomeComponent, AddOutcomeComponent, AddObservationComponent, AddGasolineTankComponent, AddMaintenanceComponent],

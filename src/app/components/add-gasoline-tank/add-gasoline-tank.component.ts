@@ -10,6 +10,7 @@ import { ActionSheetController } from '@ionic/angular';
   selector: 'app-add-gasoline-tank',
   templateUrl: './add-gasoline-tank.component.html',
   styleUrls: ['./add-gasoline-tank.component.scss'],
+  standalone: false,
 })
 export class AddGasolineTankComponent implements OnInit {
 

@@ -8,7 +8,8 @@ import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-outcome',
   templateUrl: 'outcome.page.html',
-  styleUrls: ['outcome.page.scss']
+  styleUrls: ['outcome.page.scss'],
+  standalone: false,
 })
 export class OutcomePage {
 

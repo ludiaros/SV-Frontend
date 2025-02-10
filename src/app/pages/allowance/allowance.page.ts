@@ -6,7 +6,8 @@ import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-allowance',
   templateUrl: 'allowance.page.html',
-  styleUrls: ['allowance.page.scss']
+  styleUrls: ['allowance.page.scss'],
+  standalone: false,
 })
 export class AllowancePage {
 

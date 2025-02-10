@@ -7,6 +7,7 @@ import { PopoverController } from '@ionic/angular';
   selector: 'app-add-outcome',
   templateUrl: './add-outcome.component.html',
   styleUrls: ['./add-outcome.component.scss'],
+  standalone: false,
 })
 export class AddOutcomeComponent implements OnInit {
 

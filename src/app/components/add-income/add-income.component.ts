@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/services/api.service';
   selector: 'app-add-income',
   templateUrl: './add-income.component.html',
   styleUrls: ['./add-income.component.scss'],
+  standalone: false,
 })
 export class AddIncomeComponent implements OnInit {
   @Output() incomeAdded = new EventEmitter<void>();

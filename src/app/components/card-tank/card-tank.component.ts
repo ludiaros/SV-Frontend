@@ -7,6 +7,7 @@ import { AddGasolineTankComponent } from '../add-gasoline-tank/add-gasoline-tank
   selector: 'app-card-tank',
   templateUrl: './card-tank.component.html',
   styleUrls: ['./card-tank.component.scss'],
+  standalone: false,
 })
 export class CardTankComponent  implements OnInit {
 

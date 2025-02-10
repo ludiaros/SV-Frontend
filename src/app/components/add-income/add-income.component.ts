@@ -16,6 +16,7 @@ export class AddIncomeComponent implements OnInit {
   incomeForm: FormGroup;
   isEditMode: boolean = false;
   incomeId: number | null = null;
+  clients: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -27,27 +28,72 @@ export class AddIncomeComponent implements OnInit {
     this.incomeForm = this.fb.group({
       movement_date: [today, Validators.required],
       category_id: ['29', Validators.required],
-      details: ['', Validators.required],
+      details: [''],
       income: ['', Validators.required],
+      selectedClient: [null, Validators.required],
+      receiptNumber: ['', Validators.required],
+      additionalDetails: ['']
     });
   }
 
   ngOnInit() {
+    this.loadClients();
     if (this.movementId) {
       this.isEditMode = true;
       this.loadMovementDetails(this.movementId);
     }
   }
 
+  async loadClients() {
+    try {
+      const response: any = await this.api.getClient();
+      this.clients = response;
+    } catch (error) {
+      console.error('Error loading clients:', error);
+    }
+  }
+
   loadMovementDetails(movementId: number): void {
     this.api.getIncomeById(movementId).then(response => {
+      const income = response.income[0];
       
-      this.incomeForm.setValue({
-        movement_date: response.income[0].movement_date,
-        category_id: response.income[0].category_id,
-        details: response.income[0].details,
-        income: response.income[0].value
-      })
+      // Parse the details string
+      const details = income.details;
+      let clientName = '';
+      let receiptNumber = '';
+      let additionalDetails = '';
+
+      if (details) {
+        // Extract client name (everything before " - #")
+        const clientMatch = details.match(/(.*?) - #/);
+        clientName = clientMatch ? clientMatch[1] : '';
+
+        // Extract receipt number (between "- #" and optional " (")
+        const receiptMatch = details.match(/- #(\d+)(?:\s+\(.*\))?$/);
+        receiptNumber = receiptMatch ? receiptMatch[1] : '';
+
+        // Extract additional details (everything between parentheses)
+        const detailsMatch = details.match(/\((.*?)\)$/);
+        additionalDetails = detailsMatch ? detailsMatch[1] : '';
+      }
+
+      // Find the client in the clients array
+      const selectedClient = this.clients.find(c => c.client_name === clientName);
+
+      // Ensure category_id is a string
+      const categoryId = income.category_id?.toString() || '29';
+
+      this.incomeForm.patchValue({
+        movement_date: income.movement_date,
+        category_id: categoryId,
+        income: income.value,
+        selectedClient: selectedClient,
+        receiptNumber: receiptNumber,
+        additionalDetails: additionalDetails
+      });
+
+      // Force change detection for category_id
+      this.incomeForm.get('category_id')?.updateValueAndValidity();
     }).catch(error => {
       console.error('Error al cargar los detalles del movimiento', error);
     });
@@ -58,7 +104,20 @@ export class AddIncomeComponent implements OnInit {
       return;
     }
 
-    const incomeData = this.incomeForm.value;
+    const formValues = this.incomeForm.value;
+    const clientName = formValues.selectedClient?.client_name || '';
+    const receiptNumber = formValues.receiptNumber || '';
+    const additionalDetails = formValues.additionalDetails || '';
+
+    // Concatenate the details
+    const concatenatedDetails = `${clientName} - #${receiptNumber}${additionalDetails ? ` (${additionalDetails})` : ''}`;
+    
+    const incomeData = {
+      movement_date: formValues.movement_date,
+      category_id: formValues.category_id,
+      details: concatenatedDetails,
+      income: formValues.income
+    };
 
     try {
       if (this.isEditMode) {

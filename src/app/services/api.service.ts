@@ -66,6 +66,11 @@ export class ApiService {
     return this.http.get(`${environment.apiUrl}/vehicle/all`, {headers}).toPromise();
   }
 
+  async getClient() {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${environment.apiUrl}/client`, { headers }).toPromise();
+  }
+
   async deleteIncome(incomeId: number) {
     const options = await this.getHttpOptions(
       'PUT',

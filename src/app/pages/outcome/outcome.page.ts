@@ -16,6 +16,10 @@ export class OutcomePage {
   movements: any;
   filteredMovements: any;
   outcomeIdToDelete!: number;
+  isAddDisabled = false;
+  isEditDisabled = false;
+  isDeleteDisabled = false;
+  isOverlayActive = false;
 
   constructor(
     private popoverController: PopoverController,
@@ -43,6 +47,7 @@ export class OutcomePage {
   }
 
   async add(event: Event) {
+    this.isAddDisabled = true;
     const popover = await this.popoverController.create({
       component: AddOutcomeComponent,
       event: event,
@@ -52,12 +57,14 @@ export class OutcomePage {
 
     popover.onDidDismiss().then(async () => {
       await this.loadMovements();
+      this.isAddDisabled = false;
     });
 
     await popover.present();
   }
 
   async edit(event: Event, movementId: number) {
+    this.isEditDisabled = true;
     const popover = await this.popoverController.create({
       component: AddOutcomeComponent,
       event: event,
@@ -71,12 +78,16 @@ export class OutcomePage {
 
     popover.onDidDismiss().then(async () => {
       await this.loadMovements();
+      this.isEditDisabled = false;
     });
 
     await popover.present();
   }
 
   async delete(event: Event, outcomeId: number) {
+    if (this.isDeleteDisabled) return;
+    this.isDeleteDisabled = true;
+    this.isOverlayActive = true;
     this.outcomeIdToDelete = outcomeId;
     const toast = await this.toastController.create({
       position: 'middle',
@@ -84,6 +95,11 @@ export class OutcomePage {
       color: 'warning',
       buttons: this.toastButtons
     })
+
+    toast.onDidDismiss().then(() => {
+      this.isDeleteDisabled = false;
+      this.isOverlayActive = false;
+    });
 
     await toast.present();
   }

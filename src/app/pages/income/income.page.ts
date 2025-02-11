@@ -15,6 +15,10 @@ export class IncomePage {
   movements: any;
   filteredMovements: any;
   incomeIdToDelete!: number;
+  isAddDisabled = false;
+  isEditDisabled = false;
+  isDeleteDisabled = false;
+  isOverlayActive = false;
 
   constructor(
     private popoverController: PopoverController,
@@ -42,6 +46,7 @@ export class IncomePage {
   }
 
   async add(event: Event) {
+    this.isAddDisabled = true;
     const popover = await this.popoverController.create({
       component: AddIncomeComponent,
       event: event,
@@ -51,12 +56,14 @@ export class IncomePage {
     
     popover.onDidDismiss().then(async () => {
       await this.loadMovements();
+      this.isAddDisabled = false;
     });
 
     await popover.present();
   }
 
   async edit(event: Event, movementId: number) {
+    this.isEditDisabled = true;
     const popover = await this.popoverController.create({
       component: AddIncomeComponent,
       event: event,
@@ -70,18 +77,27 @@ export class IncomePage {
 
     popover.onDidDismiss().then(async () => {
       await this.loadMovements();
+      this.isEditDisabled = false;
     });
 
     await popover.present();
   }
 
   async delete(event: Event, incomeId: number) {
+    if (this.isDeleteDisabled) return;
+    this.isDeleteDisabled = true;
+    this.isOverlayActive = true;
     this.incomeIdToDelete = incomeId;
     const toast = await this.toastController.create({
       position: 'middle',
       message: '¿Desea eliminar el registro?',
       color: 'warning',
-      buttons: this.toastButtons,
+      buttons: this.toastButtons
+    });
+
+    toast.onDidDismiss().then(() => {
+      this.isDeleteDisabled = false;
+      this.isOverlayActive = false;
     });
 
     await toast.present();
@@ -92,7 +108,6 @@ export class IncomePage {
       .deleteIncome(incomeId)
       .then(async (response) => {
         this.filteredMovements = await this.api.getIncome();
-        console.log(response.message);
       })
       .catch((error) => {
         console.error('Error al eliminar ingreso', error);

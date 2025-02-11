@@ -1,3 +1,4 @@
+<div class="overlay" *ngIf="isOverlayActive"></div>
 <ion-card *ngFor="let maintenance of maintenances">
   <ion-card-header>
     <ion-card-title class="ion-no-padding">
@@ -44,8 +45,8 @@
 
   </ion-card-content>
   <div>
-    <ion-button (click)="edit($event, maintenance.maintenance_id)" fill="clear">Editar</ion-button>
-    <ion-button fill="clear" id="open-toast" (click)="delete($event, maintenance.maintenance_id)">Eliminar</ion-button>
+    <ion-button (click)="edit($event, maintenance.maintenance_id)" fill="clear" [disabled]="isEditDisabled">Editar</ion-button>
+    <ion-button fill="clear" id="open-toast" (click)="delete($event, maintenance.maintenance_id)" [disabled]="isDeleteDisabled">Eliminar</ion-button>
   </div>
 
 </ion-card>

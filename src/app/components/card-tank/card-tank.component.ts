@@ -13,6 +13,9 @@ export class CardTankComponent  implements OnInit {
 
   tanks: any
   tankIdToDelete!: number;
+  isEditDisabled = false;
+  isDeleteDisabled = false;
+  isOverlayActive = false;
 
   constructor(
     private api: ApiService,
@@ -42,6 +45,7 @@ export class CardTankComponent  implements OnInit {
   }
 
   async edit(event: Event, tankId: number) {
+    this.isEditDisabled = true;
     const popover = await this.popoverController.create({
       component: AddGasolineTankComponent,
       event: event,
@@ -55,12 +59,16 @@ export class CardTankComponent  implements OnInit {
 
     popover.onDidDismiss().then(async () => {
       await this.loadTanks();
+      this.isEditDisabled = false;
     });
 
     await popover.present();
   }
 
   async delete(event: Event, tankId: number) {
+    if (this.isDeleteDisabled) return;
+    this.isDeleteDisabled = true;
+    this.isOverlayActive = true;
     this.tankIdToDelete = tankId;
     const toast = await this.toastController.create({
       position: 'middle',
@@ -68,6 +76,11 @@ export class CardTankComponent  implements OnInit {
       color: 'warning',
       buttons: this.toastButtons
     })
+
+    toast.onDidDismiss().then(() => {
+      this.isDeleteDisabled = false;
+      this.isOverlayActive = false;
+    });
     
     await toast.present();
   }

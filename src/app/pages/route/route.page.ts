@@ -18,6 +18,9 @@ export class RoutePage implements OnInit {
   routeId!: number;
   type!: string;
   id!: number;
+  isEditDisabled = false;
+  isCheckDisabled = false;
+  isOverlayActive = false;
 
   constructor(
     private api: ApiService,
@@ -74,6 +77,7 @@ export class RoutePage implements OnInit {
   }
 
   async observation(event: Event, referralType:string, referralId: number) {
+    this.isEditDisabled = true;
     const popover = await this.popoverController.create({
       component: AddObservationComponent,
       event: event,
@@ -88,12 +92,16 @@ export class RoutePage implements OnInit {
 
     popover.onDidDismiss().then(async () => {
       this.filteredRoutes = await this.api.getRoute();
+      this.isEditDisabled = false;
     });
 
     await popover.present();
   }
 
   async check(event: Event, type: string, id: number) {
+    if (this.isCheckDisabled) return;
+    this.isCheckDisabled = true;
+    this.isOverlayActive = true;
     this.type = type;
     this.id = id;
     const toast = await this.toastController.create({
@@ -101,6 +109,11 @@ export class RoutePage implements OnInit {
       message: '¿Desea dar como entregada esta ruta?',
       color: 'warning',
       buttons: this.toastButtons,
+    });
+
+    toast.onDidDismiss().then(() => {
+      this.isCheckDisabled = false;
+      this.isOverlayActive = false;
     });
 
     await toast.present();

@@ -1,3 +1,4 @@
+<div class="overlay" *ngIf="isOverlayActive"></div>
 <ion-card *ngFor="let tank of tanks">
   <ion-card-header>
     <ion-card-title class="ion-no-padding">
@@ -44,8 +45,8 @@
 
   </ion-card-content>
   <div>
-    <ion-button (click)="edit($event, tank.tank_id)" fill="clear">Editar</ion-button>
-    <ion-button fill="clear" id="open-toast" (click)="delete($event, tank.tank_id)">Eliminar</ion-button>
+    <ion-button (click)="edit($event, tank.tank_id)" fill="clear" [disabled]="isEditDisabled">Editar</ion-button>
+    <ion-button fill="clear" id="open-toast" (click)="delete($event, tank.tank_id)" [disabled]="isDeleteDisabled">Eliminar</ion-button>
   </div>
 
 </ion-card>

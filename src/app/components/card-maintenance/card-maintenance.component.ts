@@ -13,6 +13,9 @@ export class CardMaintenanceComponent implements OnInit {
 
   maintenances: any
   maintenanceIdToDelete!: number;
+  isEditDisabled = false;
+  isDeleteDisabled = false;
+  isOverlayActive = false;
 
   constructor(
     private api: ApiService,
@@ -41,6 +44,7 @@ export class CardMaintenanceComponent implements OnInit {
   }
 
   async edit(event: Event, maintenanceId: number) {
+    this.isEditDisabled = true;
     const popover = await this.popoverController.create({
       component: AddMaintenanceComponent,
       event: event,
@@ -54,12 +58,16 @@ export class CardMaintenanceComponent implements OnInit {
 
     popover.onDidDismiss().then(async () => {
       await this.loadMaintenance();
+      this.isEditDisabled = false;
     });
 
     await popover.present();
   }
 
   async delete(event: Event, maintenanceId: number) {
+    if (this.isDeleteDisabled) return;
+    this.isDeleteDisabled = true;
+    this.isOverlayActive = true;
     this.maintenanceIdToDelete = maintenanceId;
     const toast = await this.toastController.create({
       position: 'middle',
@@ -67,6 +75,11 @@ export class CardMaintenanceComponent implements OnInit {
       color: 'warning',
       buttons: this.toastButtons
     })
+
+    toast.onDidDismiss().then(() => {
+      this.isDeleteDisabled = false;
+      this.isOverlayActive = false;
+    });
     
     await toast.present();
   }

@@ -1,3 +1,4 @@
+<div class="overlay" *ngIf="isOverlayActive"></div>
 <ion-header>
   <ion-toolbar>
     <ion-input
@@ -37,8 +38,8 @@
       <ion-card-content class="ion-no-padding ion-padding-start">
         <ion-text class="ion-text-nowrap">{{route.client_name}}</ion-text>
       </ion-card-content>
-      <ion-button (click)="observation($event, route.referral_type, route.referral_id)" fill="clear">Observación</ion-button>
-      <ion-button fill="clear" id="open-toast" (click)="check($event, route.referral_type, route.referral_id)">Entregado</ion-button>
+      <ion-button (click)="observation($event, route.referral_type, route.referral_id)" [disabled]="isEditDisabled" fill="clear">Observación</ion-button>
+      <ion-button fill="clear" id="open-toast" (click)="check($event, route.referral_type, route.referral_id)" [disabled]="isCheckDisabled">Entregado</ion-button>
     </ion-card>
   </div>
    

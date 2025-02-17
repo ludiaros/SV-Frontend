@@ -300,6 +300,16 @@ export class ApiService {
     });
   }
 
+  async uploadPhoto(photoData: { image: string, format: string }): Promise<any> {
+    try {
+      const response = await this.http.post(`${environment.apiUrl}/upload-image`, photoData).toPromise();
+      return response;
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      throw error;
+    }
+  }
+
   private async getAuthHeaders() {
     const token = await this.tokenService.getToken();
     return new HttpHeaders({

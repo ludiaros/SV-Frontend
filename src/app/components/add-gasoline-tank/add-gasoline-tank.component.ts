@@ -21,6 +21,7 @@ export class AddGasolineTankComponent implements OnInit {
   isEditMode: boolean = false;
   selectedImage: string | null = null;
   vehicles: any;
+  photoUrl: any;
 
   constructor(private fb: FormBuilder,
     private api: ApiService,
@@ -36,7 +37,7 @@ export class AddGasolineTankComponent implements OnInit {
       date: [today, Validators.required],
       mileage: ['', Validators.required],
       paid: ['', Validators.required],
-      photo: [''],
+      photo_path: ['', Validators.required], // Changed from 'photo' to 'photo_path' and added required validator
     });
   }
 
@@ -71,26 +72,14 @@ export class AddGasolineTankComponent implements OnInit {
         date: response.date,
         mileage: response.mileage,
         paid: response.paid,
-        photo: response.photo,
+        photo_path: response.photo_path,
       });
-      if (response.photo) {
-      this.selectedImage = response.photo;
+      if (response.photo_path) {
+      this.selectedImage = response.photo_path;
     }    
     }).catch(error => {
       console.error('Error al cargar los detalles del movimiento: ', error);
     });
-  }
-
-  async addPhotoToGallery(source: CameraSource = CameraSource.Camera) {
-    try {
-      const base64Image = await this.photoService.addNewToGallery(source);
-      this.selectedImage = base64Image;
-      this.tankForm.patchValue({
-        photo: base64Image
-      });
-    } catch (error) {
-      console.error('Error adding photo:', error);
-    }
   }
 
   async selectImageSource() {
@@ -101,14 +90,14 @@ export class AddGasolineTankComponent implements OnInit {
           text: 'Tomar Foto',
           icon: 'camera',
           handler: () => {
-            this.addPhotoToGallery(CameraSource.Camera);
+            this.takePhoto();
           }
         },
         {
           text: 'Seleccionar de Galería',
           icon: 'image',
           handler: () => {
-            this.addPhotoToGallery(CameraSource.Photos);
+            this.selectFromGallery();
           }
         },
         {
@@ -120,6 +109,30 @@ export class AddGasolineTankComponent implements OnInit {
     });
 
     await actionSheet.present();
+  }
+
+  async takePhoto() {
+    try {
+      this.photoUrl = await this.photoService.addNewToGallery(CameraSource.Camera);
+      this.tankForm.patchValue({
+        photo_path: this.photoUrl.path
+      });
+      this.selectedImage = this.photoUrl.url;
+    } catch (error) {
+      console.error('Error taking photo:', error);
+    }
+  }
+
+  async selectFromGallery() {
+    try {
+      this.photoUrl = await this.photoService.addNewToGallery(CameraSource.Photos);            
+      this.tankForm.patchValue({
+        photo_path: this.photoUrl.path
+      });
+      this.selectedImage = this.photoUrl.url;
+    } catch (error) {
+      console.error('Error selecting photo:', error);
+    }
   }
 
   async onSubmit(): Promise<void> {

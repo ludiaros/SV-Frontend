@@ -1,5 +1,5 @@
 <!-- filepath: d:\Programacion\Projects\Rosal\sg-rosal\README.md -->
-# sg-rosal
+# SV - Rosal
 
 Esta es una aplicación móvil construida con el framework Capacitor.
 

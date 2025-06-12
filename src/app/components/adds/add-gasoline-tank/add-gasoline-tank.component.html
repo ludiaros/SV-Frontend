@@ -1,0 +1,15 @@
+<ng-container *ngIf="isLoaded; else loading">
+    <app-dynamic-form [form]="tankForm" [fields]="tankFields"
+        [title]="isEditMode ? 'Actualizar tanqueo' : 'Agregar tanqueo'"
+        [buttonText]="isEditMode ? 'Actualizar tanqueo' : 'Agregar tanqueo'" (formSubmit)="onSubmit()">
+    </app-dynamic-form>
+</ng-container>
+
+<ng-template #loading>
+    <ion-content class="ion-padding">
+        <div class="ion-text-center"
+            style="height: 200px; display: flex; justify-content: center; align-items: center;">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </div>
+    </ion-content>
+</ng-template>

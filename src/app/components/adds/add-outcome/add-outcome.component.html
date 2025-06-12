@@ -1,0 +1,4 @@
+<app-dynamic-form [form]="outcomeForm" [fields]="outcomeFields"
+    [title]="isEditMode ? 'Actualizar gasto' : 'Agregar gasto'"
+    [buttonText]="isEditMode ? 'Actualizar gasto' : 'Agregar gasto'" (formSubmit)="onSubmit()">
+</app-dynamic-form>

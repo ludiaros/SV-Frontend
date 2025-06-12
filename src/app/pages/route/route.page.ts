@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController, ToastController } from '@ionic/angular';
-import { AddObservationComponent } from 'src/app/components/add-observation/add-observation.component';
+import { AddObservationComponent } from 'src/app/components/adds/add-observation/add-observation.component';
 import { ApiService } from 'src/app/services/api.service';
+import { PopoverService } from 'src/app/services/ui/popover.service';
 
 @Component({
   selector: 'app-route',
@@ -12,8 +12,8 @@ import { ApiService } from 'src/app/services/api.service';
 export class RoutePage implements OnInit {
   routes: any;
   filteredRoutes: any;
-  activeRoutes: number[] = []; 
-  routesName: string[] = []; 
+  activeRoutes: number[] = [];
+  routesName: string[] = [];
   routeMap: { [key: string]: number } = {};
   routeId!: number;
   type!: string;
@@ -24,8 +24,7 @@ export class RoutePage implements OnInit {
 
   constructor(
     private api: ApiService,
-    private popoverController: PopoverController,
-    private toastController: ToastController
+    private popoverService: PopoverService
   ) {}
 
   ngOnInit() {
@@ -34,21 +33,21 @@ export class RoutePage implements OnInit {
 
   async loadRoutes() {
     this.routes = await this.api.getRoute();
-    
+
     const uniqueRouteNames: { [key: string]: boolean } = {};
-  
+
     this.routes.forEach((route: any) => {
       let routeName = `Ruta ${route.route_id}`;
-  
+
       if (!uniqueRouteNames[routeName]) {
         uniqueRouteNames[routeName] = true;
         this.routesName.push(routeName);
         this.routeMap[routeName] = route.route_id;
       }
     });
-  
+
     this.filteredRoutes = this.routes;
-  } 
+  }
 
   toggleRoute(routeName: string) {
     const routeId = this.routeMap[routeName];
@@ -76,69 +75,56 @@ export class RoutePage implements OnInit {
     );
   }
 
-  async observation(event: Event, referralType:string, referralId: number) {
+  async observation(event: Event, referralType: string, referralId: number) {
     this.isEditDisabled = true;
-    const popover = await this.popoverController.create({
-      component: AddObservationComponent,
-      event: event,
-      cssClass: 'custom-popover-class',
-      side: 'bottom',
-      alignment: 'center',
-      componentProps: {
+
+    await this.popoverService.showPopover(
+      AddObservationComponent,
+      {
         referralType: referralType,
         referralId: referralId,
       },
-    });
-
-    popover.onDidDismiss().then(async () => {
-      this.filteredRoutes = await this.api.getRoute();
-      this.isEditDisabled = false;
-    });
-
-    await popover.present();
+      async () => {
+        this.filteredRoutes = await this.api.getRoute();
+        this.isEditDisabled = false;
+      },
+      'custom-popover-class'
+    );
   }
 
   async check(event: Event, type: string, id: number) {
     if (this.isCheckDisabled) return;
+
     this.isCheckDisabled = true;
     this.isOverlayActive = true;
     this.type = type;
     this.id = id;
-    const toast = await this.toastController.create({
-      position: 'middle',
-      message: '¿Desea dar como entregada esta ruta?',
-      color: 'warning',
-      buttons: this.toastButtons,
-    });
 
-    toast.onDidDismiss().then(() => {
-      this.isCheckDisabled = false;
-      this.isOverlayActive = false;
-    });
-
-    await toast.present();
+    await this.popoverService.showConfirmationToast(
+      '¿Desea dar como entregada esta ruta?',
+      [
+        {
+          text: 'Sí',
+          role: 'info',
+          handler: () => this.checkRoute(this.type, this.id)
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+        }
+      ],
+      () => {
+        this.isCheckDisabled = false;
+        this.isOverlayActive = false;
+      }
+    );
   }
 
   checkRoute(type: string, id: number) {
     this.api.checkRouteReferral(type, id).then(async response => {
-      this.filteredRoutes =  await this.api.getRoute();
+      this.filteredRoutes = await this.api.getRoute();
     }).catch(error => {
       console.error('Error al intentar entregar la ruta', error);
     });
   }
-
-  public toastButtons = [
-    {
-      text: 'Sí',
-      role: 'info',
-      handler: () => {
-        this.checkRoute(this.type, this.id);
-        
-      }
-    },
-    {
-      text: 'No',
-      role: 'cancel',
-    },
-  ];
 }

@@ -1,0 +1,4 @@
+<app-dynamic-form [form]="incomeForm" [fields]="incomeFields" [dynamicOptions]="{ selectedClient: clients }"
+    [title]="isEditMode ? 'Actualizar recaudo' : 'Agregar recaudo'"
+    [buttonText]="isEditMode ? 'Actualizar recaudo' : 'Agregar recaudo'" (formSubmit)="onSubmit()">
+</app-dynamic-form>

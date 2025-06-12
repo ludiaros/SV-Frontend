@@ -1,0 +1,4 @@
+<app-dynamic-form [form]="maintenanceForm" [fields]="maintenanceFields"
+    [title]="isEditMode ? 'Actualizar mantenimiento' : 'Agregar mantenimiento'"
+    [buttonText]="isEditMode ? 'Actualizar mantenimiento' : 'Agregar mantenimiento'" (formSubmit)="onSubmit()">
+</app-dynamic-form>

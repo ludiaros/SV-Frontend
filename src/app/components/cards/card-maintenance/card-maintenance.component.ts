@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController, ToastController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
-import { AddMaintenanceComponent } from '../add-maintenance/add-maintenance.component';
+import { AddMaintenanceComponent } from '../../adds/add-maintenance/add-maintenance.component';
 
 @Component({
   selector: 'app-card-maintenance',

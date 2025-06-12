@@ -18,6 +18,18 @@ export class AddOutcomeComponent implements OnInit {
   isEditMode: boolean = false;
   outcomeId: number | null = null;
 
+  outcomeFields = [
+    { type: 'input', label: 'Fecha', inputType: 'date', controlName: 'movement_date' },
+    { type: 'textarea', label: 'Detalles', placeholder: 'Campo obligatorio*', controlName: 'details' },
+    { type: 'input', label: 'Valor', inputType: 'number', placeholder: 'Ingrese el gasto', controlName: 'outcome' },
+    {
+      type: 'select', label: 'Categoría', placeholder: '', controlName: 'category_id', options: [
+        { value: 3, label: 'Gastos' },
+        { value: 24, label: 'Compras' }
+      ]
+    }
+  ];
+
   constructor(
     private fb: FormBuilder,
     private api: ApiService,

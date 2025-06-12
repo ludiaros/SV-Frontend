@@ -12,10 +12,18 @@ import { ApiService } from 'src/app/services/api.service';
 export class AddObservationComponent implements OnInit {
 
   observationForm: FormGroup;
+  observationFields = [
+    {
+      type: 'textarea',
+      label: 'Observaciones',
+      placeholder: '(No obligatorio)',
+      controlName: 'observations'
+    }
+  ];
+
   @Output() observationAdded = new EventEmitter<void>();
   @Input() referralType: string | null = null;
   @Input() referralId: number | null = null;
-
 
   constructor(
     private fb: FormBuilder,
@@ -23,7 +31,7 @@ export class AddObservationComponent implements OnInit {
     private popoverController: PopoverController
   ) {
     this.observationForm = this.fb.group({
-      observations: ['', Validators.required],
+      observations: [''],
     });
   }
 
@@ -47,13 +55,9 @@ export class AddObservationComponent implements OnInit {
     const observationData = this.observationForm.value;
 
     try {
-      await this.api.addObservation(observationData, this.referralType!, this.referralId!).then(response => {
-        console.log('Ingreso actualizado:', response);
-      }).catch(error => {
-        console.error('Error al actualizar la observación:', error);
-      });;
-
-      this.popoverController.dismiss();
+      await this.api.addObservation(observationData, this.referralType!, this.referralId!);
+      this.observationAdded.emit();
+      await this.popoverController.dismiss({ observationAdded: true });
 
     } catch (error) {
       console.error('Error al guardar la observación', error);

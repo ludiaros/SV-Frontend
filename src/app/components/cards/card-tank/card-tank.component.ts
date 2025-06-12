@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController, ToastController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
-import { AddGasolineTankComponent } from '../add-gasoline-tank/add-gasoline-tank.component';
+import { AddGasolineTankComponent } from '../../adds/add-gasoline-tank/add-gasoline-tank.component';
 
 @Component({
   selector: 'app-card-tank',

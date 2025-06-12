@@ -18,6 +18,29 @@ export class AddIncomeComponent implements OnInit {
   incomeId: number | null = null;
   clients: any[] = [];
 
+  incomeFields = [
+    { type: 'input', label: 'Fecha', inputType: 'date', controlName: 'movement_date' },
+    {
+      type: 'ng-select',
+      label: 'Cliente',
+      placeholder: 'Buscar cliente',
+      controlName: 'selectedClient',
+      bindLabel: 'client_name'
+    },
+    { type: 'input', label: '# Recibo', inputType: 'text', placeholder: 'Número de recibo', controlName: 'receiptNumber' },
+    { type: 'textarea', label: 'Detalles', placeholder: 'Opcional*', controlName: 'additionalDetails' },
+    { type: 'input', label: 'Valor', inputType: 'number', placeholder: 'Ingrese el dinero', controlName: 'income' },
+    {
+      type: 'select',
+      label: 'Categoría',
+      placeholder: '',
+      controlName: 'category_id',
+      options: [
+        { value: 29, label: 'Recaudos' }
+      ]
+    }
+  ];
+
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
@@ -56,7 +79,7 @@ export class AddIncomeComponent implements OnInit {
   loadMovementDetails(movementId: number): void {
     this.api.getIncomeById(movementId).then(response => {
       const income = response.income[0];
-      
+
       // Parse the details string
       const details = income.details;
       let clientName = '';
@@ -111,7 +134,7 @@ export class AddIncomeComponent implements OnInit {
 
     // Concatenate the details
     const concatenatedDetails = `${clientName} - #${receiptNumber}${additionalDetails ? ` (${additionalDetails})` : ''}`;
-    
+
     const incomeData = {
       movement_date: formValues.movement_date,
       category_id: formValues.category_id,

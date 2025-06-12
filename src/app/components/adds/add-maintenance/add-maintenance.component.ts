@@ -16,18 +16,20 @@ export class AddMaintenanceComponent implements OnInit {
 
   maintenanceForm: FormGroup;
   isEditMode: boolean = false;
-  vehicles: any;
+  vehicles: any[] = [];
+  maintenanceFields: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
-    private popoverController: PopoverController) {
+    private popoverController: PopoverController
+  ) {
 
     const today = new Date().toISOString().split('T')[0];
 
     this.maintenanceForm = this.fb.group({
       plate: ['', Validators.required],
-      maintenance_description: [''],
+      maintenance_description: ['', Validators.required],
       date: [today, Validators.required],
       mileage: ['', Validators.required],
       paid: ['', Validators.required]
@@ -35,12 +37,11 @@ export class AddMaintenanceComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     await this.loadVehicles();
 
     if (this.maintenanceId) {
       this.isEditMode = true;
-      this.loadMaintenanceDetails(this.maintenanceId);
+      await this.loadMaintenanceDetails(this.maintenanceId);
     } else {
       if (this.vehicles.length > 0) {
         this.maintenanceForm.patchValue({
@@ -48,18 +49,37 @@ export class AddMaintenanceComponent implements OnInit {
         });
       }
     }
+
+    this.generateMaintenanceFields();
   }
 
   async loadVehicles(): Promise<void> {
     try {
-      this.vehicles = await this.api.getVehicles();
+      this.vehicles = (await this.api.getVehicles() as any[]) || [];
     } catch (error) {
       console.error('Error al cargar los vehículos:', error);
     }
   }
 
+  generateMaintenanceFields() {
+    this.maintenanceFields = [
+      {
+        type: 'select',
+        label: 'Vehículo',
+        placeholder: 'Placa',
+        controlName: 'plate',
+        options: this.vehicles.map((v: any) => ({ value: v.plate, label: v.plate }))
+      },
+      { type: 'input', label: 'Fecha', inputType: 'date', controlName: 'date' },
+      { type: 'textarea', label: 'Descripción', placeholder: 'Campo obligatorio*', controlName: 'maintenance_description' },
+      { type: 'input', label: 'Kilometraje', inputType: 'number', placeholder: 'Ej: 6000km', controlName: 'mileage' },
+      { type: 'input', label: 'Valor', inputType: 'number', placeholder: 'Costo del mantenimiento', controlName: 'paid' }
+    ];
+  }
+
   async loadMaintenanceDetails(maintenanceId: number): Promise<void> {
-    this.api.getMaintenanceById(maintenanceId).then(response => {
+    try {
+      const response = await this.api.getMaintenanceById(maintenanceId);
       this.maintenanceForm.setValue({
         plate: response.plate,
         maintenance_description: response.maintenance_description,
@@ -67,32 +87,30 @@ export class AddMaintenanceComponent implements OnInit {
         mileage: response.mileage,
         paid: response.paid
       });
-    }).catch(error => {
+    } catch (error) {
       console.error('Error al cargar los detalles del mantenimiento: ', error);
-    });
+    }
   }
 
   async onSubmit(): Promise<void> {
     if (this.maintenanceForm.invalid) {
+      this.maintenanceForm.markAllAsTouched();
       return;
     }
 
     const maintenanceData = this.maintenanceForm.value;
-    if (this.isEditMode) {
-      await this.api.updateMaintenance(this.maintenanceId!, maintenanceData).then(() => {
 
-      }).catch(error => {
-        console.error('Error al actualizar el mantenimiento: ', error);
-      });
-    } else {
+    try {
+      if (this.isEditMode) {
+        await this.api.updateMaintenance(this.maintenanceId!, maintenanceData);
+      } else {
+        await this.api.addMaintenance(maintenanceData);
+      }
 
-      this.api.addMaintenance(this.maintenanceForm.value).then(() => {
-
-      }).catch(error => {
-        console.error('Error al agregar el mantenimiento: ', error);
-      });
+      this.maintenanceAdded.emit();
+      await this.popoverController.dismiss({ maintenanceAdded: true });
+    } catch (error) {
+      console.error('Error al guardar el mantenimiento: ', error);
     }
-    this.maintenanceAdded.emit();
-    await this.popoverController.dismiss({ maintenanceAdded: true });
   }
 }

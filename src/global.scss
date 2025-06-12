@@ -24,3 +24,13 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+ion-popover.vehicles-popover::part(content) {
+  top: 20% !important; /* Solo para popovers de VehiclesPage */
+}
+
+ion-content.form-container ion-input .label-text,
+ion-content.form-container ion-textarea .label-text,
+ion-content.form-container ion-select .label-text {
+  font-weight: bold !important;
+}

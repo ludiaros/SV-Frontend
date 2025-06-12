@@ -1,0 +1,93 @@
+::ng-deep {
+  .ng-dropdown-panel {
+    position: fixed !important;
+    width: calc(100% - 32px) !important; // Ajustado para considerar el padding
+    left: 16px !important;               // Alineado con el padding del contenedor
+    transform: none !important;          // Eliminamos el translateX
+    z-index: 99999 !important;
+    margin-top: 0 !important;
+    background: var(--ion-background-color) !important;
+    top: auto !important;               // Permitir posicionamiento natural
+    
+    .ng-dropdown-panel-items {
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    
+    .ng-option {
+      padding: 12px 16px;
+      white-space: normal;              // Permitir múltiples líneas
+      line-height: 1.4;                 // Mejor espaciado para múltiples líneas
+      background: var(--ion-background-color);
+      color: var(--ion-text-color);
+      
+      &.ng-option-marked {
+        background-color: var(--ion-color-primary-tint);
+        color: var(--ion-color-primary-contrast);
+      }
+    }
+  }
+
+  .ng-select {
+    position: relative !important;       // Cambiado a relative
+    
+    .ng-select-container {
+      min-height: 44px;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+
+      .ng-value-container {
+        flex-direction: column !important;
+        gap: 4px;
+        padding-top: 8px !important;
+
+        .ng-placeholder {
+          position: static !important;
+          transform: none !important;
+          order: -1;
+        }
+
+        .ng-value {
+          position: relative;
+          padding-top: 4px;
+          font-size: 14px;
+          white-space: normal;
+          line-height: 1.4;
+          
+          .ng-value-label {
+            display: inline-block;
+            padding-right: 24px; // Espacio para el botón de cerrar
+          }
+
+          .ng-value-icon {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+      }
+    }
+
+    .ng-input {
+      padding: 0 !important;
+    }
+  }
+  
+  ion-content {
+    &::part(scroll) {
+      overflow: initial !important;
+    }
+  }
+}
+
+// Ajuste para el contenedor del ion-item
+:host {
+  ion-item.custom-select-item {
+    position: relative !important;
+    z-index: 1000;
+  }
+}
+

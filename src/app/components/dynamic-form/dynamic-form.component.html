@@ -1,0 +1,65 @@
+<ion-content class="ion-padding form-container">
+  <div class="ion-text-center">
+    <h2 class="ion-no-margin" style="margin-bottom: 5%; font-weight: 700;">{{ title }}</h2>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <ion-list>
+
+      <ng-container *ngFor="let field of fields">
+        <!-- INPUT -->
+        <ion-item *ngIf="field.type === 'input'">
+          <ion-input [label]="field.label" [type]="field.inputType" [formControlName]="field.controlName"
+            [placeholder]="field.placeholder"></ion-input>
+        </ion-item>
+
+        <!-- TEXTAREA -->
+        <ion-item *ngIf="field.type === 'textarea'">
+          <ion-textarea [label]="field.label" [placeholder]="field.placeholder"
+            [formControlName]="field.controlName"></ion-textarea>
+        </ion-item>
+
+        <!-- SELECT -->
+        <ion-item *ngIf="field.type === 'select'">
+          <ion-select [label]="field.label" [placeholder]="field.placeholder" [formControlName]="field.controlName">
+            <ion-select-option *ngFor="let option of field.options" [value]="option.value">
+              {{ option.label }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- ng-select -->
+        <ion-item *ngIf="field.type === 'ng-select'" class="custom-select-item" style="position: static;">
+          <div style="width: 100%; position: static;">
+            <ng-select [items]="getNgSelectOptions(field)" [bindLabel]="field.bindLabel"
+              [placeholder]="field.placeholder" [formControlName]="field.controlName" [searchable]="true"
+              [clearable]="true">
+            </ng-select>
+
+          </div>
+        </ion-item>
+
+        <!-- BUTTON -->
+        <ion-item *ngIf="field.type === 'button'">
+          <ion-button expand="block" (click)="field.action()" type="button">
+            <ion-icon *ngIf="field.icon" [name]="field.icon" slot="start"></ion-icon>
+            {{ field.label }}
+          </ion-button>
+        </ion-item>
+
+        <!-- IMAGEN -->
+        <ion-item *ngIf="field.type === 'image' && field.src">
+          <div class="selected-image">
+            <img [src]="field.src" alt="Imagen seleccionada" />
+          </div>
+        </ion-item>
+      </ng-container>
+
+      <!-- SUBMIT BUTTON -->
+      <ion-item lines="none" class="ion-margin-top">
+        <ion-button expand="block" type="submit">{{ buttonText }}</ion-button>
+      </ion-item>
+
+    </ion-list>
+  </form>
+</ion-content>

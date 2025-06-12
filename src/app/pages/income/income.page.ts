@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
-import { ToastController } from '@ionic/angular';
-import { AddIncomeComponent } from 'src/app/components/add-income/add-income.component';
-
+import { AddIncomeComponent } from 'src/app/components/adds/add-income/add-income.component';
 import { ApiService } from 'src/app/services/api.service';
+import { PopoverService } from 'src/app/services/ui/popover.service';
 
 @Component({
   selector: 'app-income',
@@ -21,10 +19,9 @@ export class IncomePage {
   isOverlayActive = false;
 
   constructor(
-    private popoverController: PopoverController,
-    private toastController: ToastController,
-    private api: ApiService
-  ) {}
+    private api: ApiService,
+    private popoverService: PopoverService
+  ) { }
 
   async ionViewDidEnter() {
     this.loadMovements();
@@ -32,8 +29,7 @@ export class IncomePage {
 
   async loadMovements() {
     this.movements = await this.api.getIncome();
-    console.log(this.movements);
-    
+
     this.filteredMovements = this.movements;
   }
 
@@ -47,66 +43,53 @@ export class IncomePage {
 
   async add(event: Event) {
     this.isAddDisabled = true;
-    const popover = await this.popoverController.create({
-      component: AddIncomeComponent,
-      event: event,
-      side: 'bottom',
-      alignment: 'center',
-    });
-    
-    popover.onDidDismiss().then(async () => {
-      await this.loadMovements();
-      this.isAddDisabled = false;
-    });
 
-    await popover.present();
+    await this.popoverService.showPopover(
+      AddIncomeComponent,
+      {},
+      async () => {
+        await this.loadMovements();
+        this.isAddDisabled = false;
+      },
+      'custom-popover-class'
+    );
   }
 
   async edit(event: Event, movementId: number) {
     this.isEditDisabled = true;
-    const popover = await this.popoverController.create({
-      component: AddIncomeComponent,
-      event: event,
-      cssClass: 'custom-popover-class',
-      side: 'bottom',
-      alignment: 'center',
-      componentProps: {
-        'movementId': movementId
-      }
-    });
 
-    popover.onDidDismiss().then(async () => {
-      await this.loadMovements();
-      this.isEditDisabled = false;
-    });
-
-    await popover.present();
+    await this.popoverService.showPopover(
+      AddIncomeComponent,
+      { movementId },
+      async () => {
+        await this.loadMovements();
+        this.isEditDisabled = false;
+      },
+      'custom-popover-class'
+    );
   }
 
   async delete(event: Event, incomeId: number) {
     if (this.isDeleteDisabled) return;
+
     this.isDeleteDisabled = true;
     this.isOverlayActive = true;
     this.incomeIdToDelete = incomeId;
-    const toast = await this.toastController.create({
-      position: 'middle',
-      message: '¿Desea eliminar el registro?',
-      color: 'warning',
-      buttons: this.toastButtons
-    });
 
-    toast.onDidDismiss().then(() => {
-      this.isDeleteDisabled = false;
-      this.isOverlayActive = false;
-    });
-
-    await toast.present();
+    await this.popoverService.showConfirmationToast(
+      '¿Desea eliminar el registro?',
+      this.toastButtons,
+      () => {
+        this.isDeleteDisabled = false;
+        this.isOverlayActive = false;
+      }
+    );
   }
 
   deleteIncome(incomeId: number) {
     this.api
       .deleteIncome(incomeId)
-      .then(async (response) => {
+      .then(async () => {
         this.filteredMovements = await this.api.getIncome();
       })
       .catch((error) => {

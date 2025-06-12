@@ -55,7 +55,8 @@ export class OutcomePage {
       async () => {
         await this.loadMovements();
         this.isAddDisabled = false;
-      }
+      },
+      'custom-popover-class'
     );
   }
 
@@ -69,7 +70,8 @@ export class OutcomePage {
       async () => {
         await this.loadMovements();
         this.isEditDisabled = false;
-      }
+      },
+      'custom-popover-class'
     );
   }
 

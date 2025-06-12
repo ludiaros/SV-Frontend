@@ -78,7 +78,7 @@ export class VehiclesPage implements OnInit {
             await this.cardMaintenanceComponent.loadMaintenance();
           }
         },
-        'vehicles-popover'
+        'custom-popover-class'
       );
     } else if (this.activeTab === 2) {
       await this.popoverService.showPopover(
@@ -90,7 +90,7 @@ export class VehiclesPage implements OnInit {
             await this.cardTankComponent.loadTanks();
           }
         },
-        'vehicles-popover'
+        'custom-popover-class'
       );
     }
   }

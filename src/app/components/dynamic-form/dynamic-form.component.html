@@ -9,19 +9,19 @@
       <ng-container *ngFor="let field of fields">
         <!-- INPUT -->
         <ion-item *ngIf="field.type === 'input'">
-          <ion-input [label]="field.label" [type]="field.inputType" [formControlName]="field.controlName"
+          <ion-input [label]="field.label" labelPlacement="stacked" [type]="field.inputType" [formControlName]="field.controlName"
             [placeholder]="field.placeholder"></ion-input>
         </ion-item>
 
         <!-- TEXTAREA -->
         <ion-item *ngIf="field.type === 'textarea'">
-          <ion-textarea [label]="field.label" [placeholder]="field.placeholder"
+          <ion-textarea [label]="field.label" [autoGrow]="true" label-placement="stacked" [placeholder]="field.placeholder"
             [formControlName]="field.controlName"></ion-textarea>
         </ion-item>
 
         <!-- SELECT -->
         <ion-item *ngIf="field.type === 'select'">
-          <ion-select [label]="field.label" [placeholder]="field.placeholder" [formControlName]="field.controlName">
+          <ion-select [label]="field.label" label-placement="stacked" [placeholder]="field.placeholder" [formControlName]="field.controlName">
             <ion-select-option *ngFor="let option of field.options" [value]="option.value">
               {{ option.label }}
             </ion-select-option>

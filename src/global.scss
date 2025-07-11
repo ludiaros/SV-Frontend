@@ -27,6 +27,7 @@
 
 ion-popover.custom-popover-class::part(content) {
   top: 3% !important; /* Solo para popovers de VehiclesPage */
+  width: 94% !important;
 }
 
 ion-content.form-container ion-input .label-text,

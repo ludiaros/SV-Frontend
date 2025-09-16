@@ -1,0 +1,46 @@
+<ion-card 
+  *ngIf="(notifications.length > 0 || hasPendingRequests) && shouldShowPanel()" 
+  class="notification-panel"
+  [class.position-bottom]="position === 'bottom'">
+  
+  <ion-card-header>
+    <ion-card-title>
+      <ion-icon name="notifications" slot="start"></ion-icon>
+      Estado de peticiones
+      <ion-badge *ngIf="pendingCount > 0" color="warning">{{ pendingCount }}</ion-badge>
+    </ion-card-title>
+  </ion-card-header>
+  
+  <ion-card-content>
+    <ion-list>
+      <ion-item *ngFor="let notification of notifications" [color]="getItemColor(notification.type)">
+        <ion-icon 
+          [name]="getIcon(notification.type)" 
+          slot="start"
+          [color]="getIconColor(notification.type)">
+        </ion-icon>
+        <ion-label>
+          <h3>{{ notification.message }}</h3>
+          <p>{{ notification.timestamp | date:'short' }}</p>
+        </ion-label>
+        <ion-button 
+          *ngIf="notification.type === 'error'" 
+          fill="clear" 
+          slot="end"
+          (click)="removeNotification(notification.id)">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+    
+    <div class="actions" *ngIf="notifications.length > 0">
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        (click)="clearAll()"
+        color="danger">
+        Limpiar todo
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>

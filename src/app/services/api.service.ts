@@ -3,13 +3,68 @@ import { Injectable } from '@angular/core';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 import { TokenService } from './token.service';
 import { environment } from '../../environments/environment';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
+  private cacheService: any; // Inyectado dinámicamente para evitar dependencias circulares
 
-  constructor(private http: HttpClient, private tokenService: TokenService) { }
+  constructor(private http: HttpClient, private tokenService: TokenService, private notificationService: NotificationService) { }
+
+  // Método para inyectar el servicio de caché
+  setCacheService(cacheService: any) {
+    this.cacheService = cacheService;
+  }
+
+  // Método helper para manejar peticiones con caché
+  private async executeWithCache(
+    method: 'POST' | 'PUT' | 'DELETE' | 'PATCH',
+    url: string,
+    data?: any,
+    description: string = 'Petición'
+  ) {
+    const notificationId = this.notificationService.addPendingRequest(description);
+
+    try {
+      const options = await this.getHttpOptions(method, url, data);
+
+      let response: HttpResponse;
+      switch (method) {
+        case 'POST':
+          response = await CapacitorHttp.post(options);
+          break;
+        case 'PUT':
+          response = await CapacitorHttp.put(options);
+          break;
+        case 'DELETE':
+          response = await CapacitorHttp.delete(options);
+          break;
+        case 'PATCH':
+          response = await CapacitorHttp.patch(options);
+          break;
+        default:
+          throw new Error(`Método HTTP no soportado: ${method}`);
+      }
+
+      // Petición exitosa
+      this.notificationService.markAsSuccess(notificationId, `${description} - Completado`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error en ${description}:`, error);
+
+      // Marcar como fallida en notificaciones
+      this.notificationService.markAsFailed(notificationId, `${description} - Error, reintentando...`);
+
+      // Guardar en caché si hay error
+      if (this.cacheService) {
+        await this.cacheService.addFailedRequest(method, url, data, description);
+      }
+
+      throw error;
+    }
+  }
 
   async registerToken() {
     const token = await this.tokenService.getToken();
@@ -63,7 +118,7 @@ export class ApiService {
 
   async getVehicles() {
     const headers = await this.getAuthHeaders();
-    return this.http.get(`${environment.apiUrl}/vehicle/all`, {headers}).toPromise();
+    return this.http.get(`${environment.apiUrl}/vehicle/all`, { headers }).toPromise();
   }
 
   async getClient() {
@@ -72,39 +127,39 @@ export class ApiService {
   }
 
   async deleteIncome(incomeId: number) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'PUT',
-      `${environment.apiUrl}/income/${incomeId}/delete`
+      `${environment.apiUrl}/income/${incomeId}/delete`,
+      undefined,
+      `Eliminar ingreso ${incomeId}`
     );
-    const response: HttpResponse = await CapacitorHttp.put(options);
-    return response.data;
   }
 
   async deleteOutcome(outcomeId: number) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'PUT',
-      `${environment.apiUrl}/outcome/${outcomeId}/delete`
+      `${environment.apiUrl}/outcome/${outcomeId}/delete`,
+      undefined,
+      `Eliminar egreso ${outcomeId}`
     );
-    const response: HttpResponse = await CapacitorHttp.put(options);
-    return response.data;
   }
 
   async deleteTank(tankId: number) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'PUT',
-      `${environment.apiUrl}/tank/${tankId}/delete`
+      `${environment.apiUrl}/tank/${tankId}/delete`,
+      undefined,
+      `Eliminar tanque ${tankId}`
     );
-    const response: HttpResponse = await CapacitorHttp.put(options);
-    return response.data;
   }
 
   async deleteMaintenance(maintenanceId: number) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'PUT',
-      `${environment.apiUrl}/maintenance/${maintenanceId}/delete`
+      `${environment.apiUrl}/maintenance/${maintenanceId}/delete`,
+      undefined,
+      `Eliminar mantenimiento ${maintenanceId}`
     );
-    const response: HttpResponse = await CapacitorHttp.put(options);
-    return response.data;
   }
 
   async checkRouteReferral(type: string, id: number) {
@@ -117,54 +172,50 @@ export class ApiService {
   }
 
   async addIncome(incomeData: any) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'POST',
       `${environment.apiUrl}/income`,
-      incomeData
+      incomeData,
+      'Agregar ingreso'
     );
-    const response: HttpResponse = await CapacitorHttp.post(options);
-    return response.data;
   }
 
   async addOutcome(outcomeData: any) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'POST',
       `${environment.apiUrl}/outcome`,
-      outcomeData
+      outcomeData,
+      'Agregar egreso'
     );
-    const response: HttpResponse = await CapacitorHttp.post(options);
-    return response.data;
   }
 
   async addObservation(observationData: any, type: string, id: number) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'PUT',
       `${environment.apiUrl}/referral/${type}/${id}`,
-      observationData
+      observationData,
+      `Agregar observación ${type}/${id}`
     );
-    const response: HttpResponse = await CapacitorHttp.put(options);
-    return response.data;
   }
 
   async addTank(tankData: any) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'POST',
       `${environment.apiUrl}/tank`,
-      tankData
+      tankData,
+      'Agregar tanque'
     );
-    const response: HttpResponse = await CapacitorHttp.post(options);
-    return response.data;
   }
 
   async addMaintenance(maintenanceData: any) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'POST',
       `${environment.apiUrl}/maintenance`,
-      maintenanceData
+      maintenanceData,
+      'Agregar mantenimiento'
     );
-    const response: HttpResponse = await CapacitorHttp.post(options);
-    return response.data;
   }
+
 
   async getAllowanceById(allowanceId: number) {
     const options = await this.getHttpOptionsWithoutBody(
@@ -221,48 +272,44 @@ export class ApiService {
   }
 
   async updateIncome(incomeId: number, incomeData: any) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'PATCH',
       `${environment.apiUrl}/income/${incomeId}`,
-      incomeData
+      incomeData,
+      `Actualizar ingreso ${incomeId}`
     );
-    const response: HttpResponse = await CapacitorHttp.put(options);
-    return response.data;
   }
 
   async updateOutcome(outcomeId: number, outcomeData: any) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'PATCH',
       `${environment.apiUrl}/outcome/${outcomeId}`,
-      outcomeData
+      outcomeData,
+      `Actualizar egreso ${outcomeId}`
     );
-    const response: HttpResponse = await CapacitorHttp.put(options);
-    return response.data;
   }
 
   async updateTank(tankId: number, tankData: any) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'PATCH',
       `${environment.apiUrl}/tank/${tankId}`,
-      tankData
+      tankData,
+      `Actualizar tanque ${tankId}`
     );
-    const response: HttpResponse = await CapacitorHttp.put(options);
-    return response.data;
   }
 
   async updateMaintenance(maintenanceId: number, maintenanceData: any) {
-    const options = await this.getHttpOptions(
+    return this.executeWithCache(
       'PATCH',
       `${environment.apiUrl}/maintenance/${maintenanceId}`,
-      maintenanceData
+      maintenanceData,
+      `Actualizar mantenimiento ${maintenanceId}`
     );
-    const response: HttpResponse = await CapacitorHttp.put(options);
-    return response.data;
   }
 
   async getMaintenanceByDateRange(startDate: string, endDate: string) {
     const headers = await this.getAuthHeaders();
-    return this.http.get(`${environment.apiUrl}/maintenance`, { 
+    return this.http.get(`${environment.apiUrl}/maintenance`, {
       headers,
       params: { start_date: startDate, end_date: endDate }
     }).toPromise();
@@ -270,7 +317,7 @@ export class ApiService {
 
   async getTankByDateRange(startDate: string, endDate: string) {
     const headers = await this.getAuthHeaders();
-    return this.http.get(`${environment.apiUrl}/tank`, { 
+    return this.http.get(`${environment.apiUrl}/tank`, {
       headers,
       params: { start_date: startDate, end_date: endDate }
     }).toPromise();
@@ -278,7 +325,7 @@ export class ApiService {
 
   async searchTaxesByDescription(description: string): Promise<any> {
     return this.getTax().then((tax: any) => {
-      return tax.filter((tax: any) => 
+      return tax.filter((tax: any) =>
         tax.obligation_description.toLowerCase().includes(description.toLowerCase())
       );
     });
@@ -286,7 +333,7 @@ export class ApiService {
 
   async searchTanksByDescription(description: string): Promise<any> {
     return this.getTank().then((tanks: any) => {
-      return tanks.filter((tank: any) => 
+      return tanks.filter((tank: any) =>
         tank.tank_description.toLowerCase().includes(description.toLowerCase())
       );
     });
@@ -294,7 +341,7 @@ export class ApiService {
 
   async searchMaintenanceByDescription(description: string): Promise<any> {
     return this.getMaintenance().then((maintenances: any) => {
-      return maintenances.filter((maintenance: any) => 
+      return maintenances.filter((maintenance: any) =>
         maintenance.maintenance_description.toLowerCase().includes(description.toLowerCase())
       );
     });

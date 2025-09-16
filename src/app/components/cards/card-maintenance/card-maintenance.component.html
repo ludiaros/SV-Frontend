@@ -1,4 +1,8 @@
 <div class="overlay" *ngIf="isOverlayActive"></div>
+
+<!-- Panel de notificaciones -->
+<app-notification-panel></app-notification-panel>
+
 <ion-card *ngFor="let maintenance of maintenances">
   <ion-card-header>
     <ion-card-title class="ion-no-padding">

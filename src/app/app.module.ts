@@ -16,11 +16,48 @@ import { AddObservationComponent } from './components/adds/add-observation/add-o
 import { AddGasolineTankComponent } from './components/adds/add-gasoline-tank/add-gasoline-tank.component';
 import { AddMaintenanceComponent } from './components/adds/add-maintenance/add-maintenance.component';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
+import { CacheService } from './services/cache.service';
+import { ApiService } from './services/api.service';
+import { NotificationService } from './services/notification.service';
+import { NotificationPanelComponent } from './components/cards/notification-panel/notification-panel.component';
+import { UploadStatusService } from './services/upload-status.service';
+import { VehiclesPageModule } from './pages/vehicles/vehicles.module';
 
 @NgModule({
-  declarations: [AppComponent, AddIncomeComponent, AddOutcomeComponent, AddObservationComponent, AddGasolineTankComponent, AddMaintenanceComponent, DynamicFormComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, IonicStorageModule.forRoot(), NgSelectModule,  ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, provideHttpClient() ],
+  declarations: [
+    AppComponent, 
+    AddIncomeComponent, 
+    AddOutcomeComponent, 
+    AddObservationComponent, 
+    AddGasolineTankComponent, 
+    AddMaintenanceComponent, 
+    DynamicFormComponent,
+    //NotificationPanelComponent,
+    // CardTaxComponent, CardTankComponent, CardMaintenanceComponent, DateFilterComponent
+    
+  ],
+  imports: [
+    BrowserModule, 
+    IonicModule.forRoot(), 
+    AppRoutingModule, 
+    ReactiveFormsModule, 
+    IonicStorageModule.forRoot(), 
+    NgSelectModule
+
+  ],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, 
+    provideHttpClient(), 
+    CacheService,
+    ApiService,
+    NotificationService,
+    UploadStatusService
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private cacheService: CacheService, private apiService: ApiService) {
+    // Inyectar el servicio de caché en el ApiService
+    this.apiService.setCacheService(this.cacheService);
+  }
+}

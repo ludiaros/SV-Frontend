@@ -5,13 +5,15 @@ import { FormsModule } from '@angular/forms';
 
 import { OutcomePageRoutingModule } from './outcome-routing.module';
 import { OutcomePage } from './outcome.page';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    OutcomePageRoutingModule
+    OutcomePageRoutingModule,
+    SharedModule
   ],
   declarations: [
     OutcomePage

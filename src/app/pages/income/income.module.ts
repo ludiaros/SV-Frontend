@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IncomePage } from './income.page';
 
 import { IncomePageRoutingModule } from './income-routing.module';
+import { SharedModule } from '../shared.module';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { IncomePageRoutingModule } from './income-routing.module';
     CommonModule,
     FormsModule,
     IncomePageRoutingModule,
+    SharedModule
   ],
   declarations: [IncomePage]
 })
